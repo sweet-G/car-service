@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <!-- 连接数据库的jar -->
+    <classPathEntry location="E:\kaishengit\jars\JDBC\mysql-connector-java-5.1.40.jar"/>
+
+    <context id="myConfig" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql:///car-service"
+                        userId="root" password="root"/>
+
+        <javaModelGenerator targetPackage="com.zt.entity" targetProject="src/main/java"/>
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.zt.mapper" targetProject="src/main/java"/>
+
+        <table tableName="parts"/>
+    </context>
+</generatorConfiguration>
