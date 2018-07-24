@@ -182,8 +182,27 @@
   <select id="findPartsWithType" resultMap="PartsWithType">
     SELECT parts.*,type.type_name FROM parts,type where parts.type_id = type.id
   </select>
+    <select id="findPageWithTypeMap" resultMap="PartsWithType">
+      SELECT p.*, t.type_name
+      FROM
+      parts as p
+      LEFT JOIN `type` as t
+      ON  p.type_id = t.id
+      <where>
+        <if test="partsName != null and partsName != ''">
+          AND  p.parts_name like concat('%',#{partsName},'%')
+        </if>
+        <if test="partsType != null and partsType != ''">
+          AND  p.type_id = #{partsType}
+        </if>
+      </where>
 
-  <update id="updateByExampleSelective" parameterType="map">
+    </select>
+    <select id="selectPartsNo" resultType="com.zt.entity.Parts">
+      select * from parts where parts_name = #{partsNo}
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map">
     update parts
     <set>
       <if test="record.id != null">

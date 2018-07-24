@@ -13,3 +13,5 @@
 <script src="/static/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/plugins/daterangepicker/moment.js"></script>
 <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="/static/plugins/layer/layer.js"></script>
+<script src="/static/dist/js/jquery.validate.min.js"></script>

@@ -7,6 +7,6 @@ package com.zt.util;
 
 public class Constant {
 
-    public static final Integer PAGE_SIZE = 6;
+    public static final Integer PAGE_SIZE = 4;
 
 }
