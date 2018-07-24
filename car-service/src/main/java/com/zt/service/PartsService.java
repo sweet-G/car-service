@@ -1,5 +1,6 @@
 package com.zt.service;
 
+import com.github.pagehelper.PageInfo;
 import com.zt.entity.Parts;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,10 @@ public interface PartsService {
      * @return parts
      */
     Parts findById(Integer id);
+
+    /**
+     * 分页查询Parts集合
+     * @return PageInfo<Parts>
+     */
+    PageInfo<Parts> findPage(Integer pageNo);
 }

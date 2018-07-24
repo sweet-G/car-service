@@ -92,6 +92,7 @@
     from parts
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from parts
     where id = #{id,jdbcType=INTEGER}
@@ -171,6 +172,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+    <resultMap id="PartsWithType" type="com.zt.entity.Parts" extends="BaseResultMap">
+        <association property="type" javaType="com.zt.entity.Type" column="type_id">
+            <id column="type_id" property="id"/>
+            <result column="type_name" property="typeName"/>
+        </association>
+    </resultMap>
+  <select id="findPartsWithType" resultMap="PartsWithType">
+    SELECT parts.*,type.type_name FROM parts,type where parts.type_id = type.id
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update parts
     <set>

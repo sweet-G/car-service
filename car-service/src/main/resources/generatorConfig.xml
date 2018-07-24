@@ -21,6 +21,6 @@
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.zt.mapper" targetProject="src/main/java"/>
 
-        <table tableName="parts"/>
+        <table tableName="type"/>
     </context>
 </generatorConfiguration>
