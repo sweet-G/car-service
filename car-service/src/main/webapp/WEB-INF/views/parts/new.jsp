@@ -59,7 +59,7 @@
                         </div>
                         <div class="form-group">
                             <label>类型:</label>
-                            <select name="typeId" class="form-control">
+                            <select name="type" class="form-control">
                                 <option>请选择类型</option>
                                 <c:forEach items="${typeList}" var="type">
                                     <option value="${type.id}" >${type.typeName}</option>
@@ -73,6 +73,7 @@
 
                     </form>
                     <button class="btn btn-primary pull-left" id="saveBtn">保存</button>
+                    <button class="btn btn-default pull-left" style="margin-left: 20px" id="cancel">取消</button>
                 </div>
                 <!-- /.box-body -->
 
@@ -94,6 +95,10 @@
     $(function(){
         $("#saveBtn").click(function() {
             $("#addForm").submit();
+        })
+
+        $("#cancel").click(function () {
+            window.location.href = "/parts";
         })
 
         $("#addForm").validate({
@@ -157,9 +162,9 @@
                     data:'$("#addForm").serialize()',
                     beforeSend:function(){
                         $("#saveBtn").attr("disabled","disabled").text("保存中..");
-                    },
-                    success:function(res){
-                        if(res.flag == "true"){
+            },
+                    success:function(json){
+                        if(json == "true"){
                             window.location.href = "/parts";
                         }
                     },
@@ -167,7 +172,7 @@
                         layer.alert("系统繁忙");
                     },
                     complete:function(){
-                        $("#saveBtn").removeattr("disabled").text("保存");
+                        $("#saveBtn").removeAttr("disabled").text("保存");
                     }
                 })
             }

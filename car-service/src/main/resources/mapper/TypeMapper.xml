@@ -125,6 +125,31 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+    <select id="findByPageWithMaps" resultType="com.zt.entity.Type">
+      select type.type_name from type
+      <where>
+        <if test="keys != null and keys != ''">
+          and type_name like concat('%',#{keys},'%')
+        </if>
+      </where>
+    </select>
+  <resultMap id="findParts" type="com.zt.entity.Type" extends="BaseResultMap">
+    <collection property="partsList" ofType="com.zt.entity.Parts">
+      <id column="parts_id" jdbcType="INTEGER" property="id" />
+      <result column="parts_no" jdbcType="VARCHAR" property="partsNo" />
+      <result column="parts_name" jdbcType="VARCHAR" property="partsName" />
+      <result column="in_price" jdbcType="DECIMAL" property="inPrice" />
+      <result column="sale_price" jdbcType="DECIMAL" property="salePrice" />
+      <result column="inventory" jdbcType="INTEGER" property="inventory" />
+      <result column="type_id" jdbcType="INTEGER" property="id" />
+      <result column="address" jdbcType="VARCHAR" property="address" />
+    </collection>
+  </resultMap>
+  <select id="findTypeWithParts" resultMap="findParts">
+    select type.type_name,parts.id as parts_id from type,parts where type.id = parts.type_id
+    where type.id = #{id}
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update type
     <set>

@@ -35,7 +35,7 @@
                 <div class="box-body">
                     <form class="form-inline pull-left">
                         <input type="text" name="partsName" value="${param.partsName}" placeholder="配件名称" class="form-control">
-                        <input type="text" name="inventory" value="${param.inventory}" placeholder="库存量" class="form-control">
+                        <input type="text" name="partsInventory" value="${param.partsInventory}" placeholder="库存量" class="form-control">
                         <select class="form-control" name="partsType" id="partsType">
                             <option value="">请选择配件类型</option>
                             <c:forEach items="${typeList}" var="type">
@@ -75,7 +75,7 @@
                                 <td>${parts.type.typeName}</td>
                                 <td>${parts.address}</td>
                                 <td><a href="/parts/${parts.id}/edit">更新</a>
-                                    <a href="javascript:;" class="del" ref="${parts.id}">删除</a> </td>
+                                    <a href="javascript:;" class="del"partsNo="${parts.partsNo}" ref="${parts.id}">删除</a> </td>
                             </tr>
                         </c:forEach>
 
@@ -109,9 +109,18 @@
 
         $(".del").click(function(){
             var id = $(this).attr("ref");
-            layer.confirm("确定要删除么？",function () {
-                window.location.href = "/parts/" + id + "/del";
-            })
+            var partsNo = $(this).attr("partsNo");
+            layer.msg("delete..."+ id);
+            layer.prompt({title:'请输入要删除的配件编号',formType: 3},function(text,index){
+                if(text.toUpperCase() == partsNo.toUpperCase()){
+                    layer.close(index);
+                    window.location.href = "/parts/" + id + "/del";
+                }else{
+                    layer.close(index);
+                    layer.msg("配件编码错误，删除已取消");
+                }
+            });
+
         })
 
 
@@ -122,7 +131,7 @@
             last:'末页',
             prev:'上一页',
             next:'下一页',
-            href:"?p={{number}}&partsName=" + encodeURIComponent('${param.partsName}') + "&partsType=${param.partsType}"
+            href:"?p={{number}}&partsType=${param.partsType}&partsInventory=${param.partsInventory}&partsName=" + encodeURIComponent("${param.partsName}")
         });
 
         var locale = {

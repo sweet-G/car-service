@@ -195,6 +195,9 @@
         <if test="partsType != null and partsType != ''">
           AND  p.type_id = #{partsType}
         </if>
+        <if test="partsInventory != null and partsInventory != ''">
+          and p.inventory >= #{partsInventory} order by inventory desc
+        </if>
       </where>
 
     </select>

@@ -1,8 +1,11 @@
 package com.zt.mapper;
 
+import com.zt.entity.Parts;
 import com.zt.entity.Type;
 import com.zt.entity.TypeExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TypeMapper {
@@ -27,4 +30,8 @@ public interface TypeMapper {
     int updateByPrimaryKeySelective(Type record);
 
     int updateByPrimaryKey(Type record);
+
+    List<Type> findByPageWithMaps(Map<String,Object> maps);
+
+    List<Parts> findTypeWithParts(Integer id);
 }

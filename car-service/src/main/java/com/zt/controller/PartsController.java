@@ -4,14 +4,15 @@ import com.github.pagehelper.PageInfo;
 import com.zt.entity.Parts;
 import com.zt.entity.Type;
 import com.zt.service.PartsService;
-import com.zt.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.jws.WebParam;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +32,13 @@ public class PartsController {
     public String list(@RequestParam(name = "p",defaultValue = "1",required = false) Integer pageNo,
                        @RequestParam(required = false) String partsName,
                        @RequestParam(required = false) Integer partsType,
+                       @RequestParam(required = false) Integer partsInventory,
                        Model model){
 
         Map<String, Object> maps = new HashMap<>();
         maps.put("partsName",partsName);
         maps.put("partsType",partsType);
+        maps.put("partsInventory",partsInventory);
 
         PageInfo<Parts> page = partsService.findPageWithTypeMap(pageNo,maps);
         List<Type> typeList = partsService.findTypeList();
@@ -92,17 +95,20 @@ public class PartsController {
         return "redirect:/parts";
     }
 
-    @ResponseBody
-    @GetMapping(value = "/check/partsNo",produces = "application/json")
-    public boolean check(String partNo, Model model){
-        boolean flag = partsService.findByPartsNo(partNo);
+    @GetMapping("/check/partsNo")
+    public String check(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
+            String partsNo = request.getParameter("partsNo");
+            //partsNo = new String(partsNo.getBytes("ISO8859-1"),"UTF-8");
+            boolean res = partsService.findByPartsNo(partsNo);
 
-        if(flag){
-            return true;
-        }
+            PrintWriter writer = response.getWriter();
+            writer.print(res);
+            response.setContentType("application/json;charset=UTF-8");
 
-        model.addAttribute("flag",flag);
-        return false;
+            writer.flush();
+            writer.close();
+
+            return "parts/new";
     }
 
 }

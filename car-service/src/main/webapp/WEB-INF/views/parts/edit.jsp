@@ -68,6 +68,7 @@
                         </div>
                         <button class="btn btn-primary pull-left">保存</button>
                     </form>
+                    <button class="btn btn-default pull-left" style="margin-left: 20px" id="cancel">取消</button>
                 </div>
                 <!-- /.box-body -->
 
@@ -86,7 +87,11 @@
 
 <%@ include file="../include/js.jsp" %>
 <script>
+$(function () {$("#cancel").click(function () {
+    window.location.href = "/parts";
+})
 
+})
 </script>
 </body>
 </html>
