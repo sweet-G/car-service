@@ -38,7 +38,7 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public String login(@CookieValue(defaultValue = "null") String employeeTel, Model model){
+    public String login(@CookieValue(required = false) String employeeTel, Model model){
             model.addAttribute("employeeTel",employeeTel);
         return "index";
     }
@@ -72,7 +72,7 @@ public class LoginController {
                 Cookie[] cookies = request.getCookies();
                 if(cookies != null){
                     for (Cookie cookie : cookies) {
-                        if("employee".equals(cookie.getName())){
+                        if("employeeTel".equals(cookie.getName())){
                             cookie.setDomain("localhost");
                             cookie.setPath("/");
                             cookie.setMaxAge(0);

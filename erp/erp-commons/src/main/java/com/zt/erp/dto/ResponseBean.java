@@ -1,0 +1,60 @@
+package com.zt.erp.dto;
+
+/**
+ * @author zhangtian
+ * @date 2018/7/27
+ */
+
+public class ResponseBean {
+
+    private static final String RESPONSEBEAN_STATE_SUCCESS = "success";
+    private static final String RESPONSEBEAN_STATE_ERROR = "error";
+
+    private String stata;
+    private Object data;
+    private String message;
+
+    public static ResponseBean success(){
+        ResponseBean responseBean = new ResponseBean();
+        responseBean.setStata(RESPONSEBEAN_STATE_SUCCESS);
+        return responseBean;
+    }
+
+    public static ResponseBean success(Object obj){
+        ResponseBean responseBean = new ResponseBean();
+        responseBean.setStata(RESPONSEBEAN_STATE_SUCCESS);
+        responseBean.setData(obj);
+        return responseBean;
+    }
+
+    public static ResponseBean error(String message){
+        ResponseBean responseBean = new ResponseBean();
+        responseBean.setStata(RESPONSEBEAN_STATE_ERROR);
+        responseBean.setMessage(message);
+        return responseBean;
+    }
+
+    public String getStata() {
+        return stata;
+    }
+
+    public void setStata(String stata) {
+        this.stata = stata;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}

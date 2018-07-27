@@ -50,7 +50,7 @@
                             <tr>
                                 <td>${type.typeName}</td>
                                 <td>
-                                    <a href="javascript:;" class="del"  rel="${type.id}" typeName="${type.typeName}">删除</a>
+                                    <a href="javascript:;" typeName="${type.typeName}" rel="${type.id}" class="del">删除</a>
                                     <a href="javascript:;" class="update" typeName="${type.typeName}" rel="${type.id}">修改</a>
                                 </td>
                             </tr>
