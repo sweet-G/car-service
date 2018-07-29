@@ -58,24 +58,18 @@
                             <table class="table tree">
 
                                 <tbody>
-                                <c:forEach items="${permissionList}" var="permission">
-                                    <tr class="treegrid-${permission.id}
-                                <c:if test="${permission.pid != 0}">
-                                    treegrid-parent-${permission.pid}
+                                <c:forEach items="${permissionBooleanMap}" var="entry">
+                                    <tr class="treegrid-${entry.key.id}
+                                <c:if test="${entry.key.pid != 0}">
+                                    treegrid-parent-${entry.key.pid}
                                 </c:if>">
                                         <td>
-                                            <input type="checkbox" name="permissionId"  value="${permission.id}"
-                                                <c:forEach items="${rolePermissionList}" var="rolePermission">
-                                                    <c:if test="${not empty rolePermission.permissionId}">
-                                                    checked
-                                            </c:if>
-                                            </c:forEach>
-                                            >
+                                            <input type="checkbox" name="permissionId"  value="${entry.key.id}" ${entry.value ? 'checked' : ''}>
                                         </td>
-                                        <td>${permission.permissionName}</td>
-                                        <td>${permission.permissionCode}</td>
-                                        <td>${permission.url}</td>
-                                        <td>${permission.permissionType}</td>
+                                        <td>${entry.key.permissionName}</td>
+                                        <td>${entry.key.permissionCode}</td>
+                                        <td>${entry.key.url}</td>
+                                        <td>${entry.key.permissionType}</td>
                                         <td>
                                             <a class="btn btn-primary btn-xs" href="/manage/permission/${permission.id}/edit" title="编辑"><i class="fa fa-pencil"></i></a>
                                             <a class="btn btn-danger btn-xs delLink" rel="${permission.id}" href="javascript:;" title="删除"><i class="fa fa-trash"></i></a>

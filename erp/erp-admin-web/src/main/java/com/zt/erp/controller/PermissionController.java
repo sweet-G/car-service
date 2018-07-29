@@ -1,5 +1,6 @@
 package com.zt.erp.controller;
 
+import com.google.common.collect.Lists;
 import com.zt.erp.dto.ResponseBean;
 import com.zt.erp.entity.Permission;
 import com.zt.erp.exception.ServiceException;
@@ -63,12 +64,37 @@ public class PermissionController {
         Permission permission = rolePermissionService.findByPermissionId(id);
         List<Permission> menuPermissionList = rolePermissionService.findPermissionListByType(Permission.PERMISSION_TYPE_MENU);
 
+        //排除当前的permission对象及其子对象
+        //menuPermissionList.remove(permission);
+        remove(menuPermissionList,permission);
+
         model.addAttribute("permission",permission);
         model.addAttribute("menuPermissionList",menuPermissionList);
 
         return "manage/permission/edit";
 
     }
+
+    /**
+     * 递归去除所有的子权限
+     * @param menuPermissionList
+     * @param permission
+     */
+    private void remove(List<Permission> menuPermissionList, Permission permission) {
+        //通过临时变量对所有的List进行存储，防止侧漏
+        List<Permission> tempList = Lists.newArrayList(menuPermissionList);
+
+        for(int i = 0; i < tempList.size(); i++){
+            //判断是否有子权限要去除
+            if(tempList.get(i).getPid().equals(permission.getId())){
+                remove(menuPermissionList,tempList.get(i));
+            }
+        }
+
+        //去除跟权限
+        menuPermissionList.remove(permission);
+    }
+
 
     @PostMapping("/{id:\\d+}/edit")
     public String editPermission( @PathVariable Integer id,String permissionName, RedirectAttributes redirectAttributes){

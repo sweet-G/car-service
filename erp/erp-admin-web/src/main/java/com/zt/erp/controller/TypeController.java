@@ -38,11 +38,8 @@ public class TypeController {
         Map<String, Object> maps = new HashMap<>();
         maps.put("keys",keys);
 
-        List<Type> typeList = partsService.findTypeList();
         PageInfo<Type> page = typeService.findPageWithMap(pageNo,maps);
-
         model.addAttribute("page",page);
-        model.addAttribute("typeList",typeList);
         return "type/list";
     }
 
@@ -91,5 +88,7 @@ public class TypeController {
 
         return "redirect:/type";
     }
+
+
 
 }

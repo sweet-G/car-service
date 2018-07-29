@@ -125,14 +125,18 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <select id="findByPageWithMaps" resultType="com.zt.erp.entity.Type">
-      select type.type_name from type
-      <where>
-        <if test="keys != null and keys != ''">
-          and type_name like concat('%',#{keys},'%')
-        </if>
-      </where>
-    </select>
+  <select id="findByPageWithMaps" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    `type`
+    <where>
+      <if test="keys != null and keys != ''">
+        type_name LIKE concat('%', #{keys}, '%')
+      </if>
+    </where>
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update type
     <set>

@@ -59,9 +59,7 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public Type findById(Integer id) {
-
-        Type type = typeMapper.selectByPrimaryKey(id);
-        return type;
+        return typeMapper.selectByPrimaryKey(id);
     }
 
     /**

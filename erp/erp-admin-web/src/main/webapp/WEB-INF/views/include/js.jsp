@@ -15,3 +15,6 @@
 <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
 <script src="/static/plugins/layer/layer.js"></script>
 <script src="/static/dist/js/jquery.validate.min.js"></script>
+
+<script src="/static/plugins/select2/select2.min.js"></script>
+<script src="/static/plugins/select2/select2.full.min.js"></script>

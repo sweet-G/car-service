@@ -89,22 +89,22 @@
         }
 
         //删除
-        $(".delLink").click(function () {
+        $(".delLink").click(function() {
             var id = $(this).attr("rel");
-            layer.confirm("确定要删除该角色？",function (index) {
-                layer.close(index);
-                $.get("/manage/role/"+id+"/del").done(function (result) {
-                    if(result.status == 'success') {
-                        layer.msg("删除成功");
-                        window.history.go(0);
+            layer.confirm("确定要删除改角色么？",function() {
+                $.get("/manage/role/" + id + "/del").done(function(res){
+                    if(res.state == "success") {
+                        layer.msg("删除成功", {icon:2, time:2000},function () {
+                            history.go(0);
+                        });
                     } else {
-                        layer.msg(result.message);
+                        layer.msg(res.message, {icon:2, time:2000});
                     }
-                }).error(function () {
-                    layer.msg("服务器忙");
-                });
+                }).error(function() {
+                    layer.msg("系统异常")
+                })
             })
-        });
+        })
     });
 </script>
 </body>

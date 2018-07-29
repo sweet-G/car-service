@@ -179,9 +179,6 @@
             <result column="type_name" property="typeName"/>
         </association>
     </resultMap>
- <!-- <select id="findPartsWithType" resultMap="PartsWithType">
-    SELECT parts.*,type.type_name FROM parts,type where parts.type_id = type.id
-  </select>-->
     <select id="findPageWithTypeMap" resultMap="PartsWithType">
   SELECT p.*, t.type_name
       FROM

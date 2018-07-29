@@ -10,36 +10,36 @@ public class ResponseBean {
     private static final String RESPONSEBEAN_STATE_SUCCESS = "success";
     private static final String RESPONSEBEAN_STATE_ERROR = "error";
 
-    private String stata;
+    private String state;
     private Object data;
     private String message;
 
     public static ResponseBean success(){
         ResponseBean responseBean = new ResponseBean();
-        responseBean.setStata(RESPONSEBEAN_STATE_SUCCESS);
+        responseBean.setState(RESPONSEBEAN_STATE_SUCCESS);
         return responseBean;
     }
 
     public static ResponseBean success(Object obj){
         ResponseBean responseBean = new ResponseBean();
-        responseBean.setStata(RESPONSEBEAN_STATE_SUCCESS);
+        responseBean.setState(RESPONSEBEAN_STATE_SUCCESS);
         responseBean.setData(obj);
         return responseBean;
     }
 
     public static ResponseBean error(String message){
         ResponseBean responseBean = new ResponseBean();
-        responseBean.setStata(RESPONSEBEAN_STATE_ERROR);
+        responseBean.setState(RESPONSEBEAN_STATE_ERROR);
         responseBean.setMessage(message);
         return responseBean;
     }
 
-    public String getStata() {
-        return stata;
+    public String getState() {
+        return state;
     }
 
-    public void setStata(String stata) {
-        this.stata = stata;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public Object getData() {

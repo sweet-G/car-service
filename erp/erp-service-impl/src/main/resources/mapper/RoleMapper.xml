@@ -179,8 +179,37 @@
         left join role_permission as rp on r.id = rp.role_id
         left join permission as p on p.id = rp.permission_id
     </select>
+    <select id="findByIdWithPermission" resultMap="roleWithPermissionList">
+      select r.*,p.id as permission_id,
+            p.permission_name,
+            p.permission_code,
+            p.permission_type,
+            p.pid,
+            p.create_time,
+            p.url
+        from role as r
+        left join role_permission as rp on r.id = rp.role_id
+        left join permission as p on p.id = rp.permission_id
+        where r.id = #{id}
+    </select>
 
-    <update id="updateByExampleSelective" parameterType="map">
+  <select id="findListByEmployeeId" resultType="com.zt.erp.entity.Role">
+      SELECT
+          *
+      FROM
+          role
+      WHERE
+          id IN (
+              SELECT
+                  role_id
+              FROM
+                  employee_role
+              WHERE
+                  employee_id = #{id}
+          );
+    </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
     update role
     <set>
       <if test="record.id != null">

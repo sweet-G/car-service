@@ -5,6 +5,7 @@ import com.zt.erp.entity.Role;
 import com.zt.erp.entity.RolePermission;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhangtian
@@ -81,7 +82,7 @@ public interface RolePermissionService {
      * 修改role
      * @param role
      */
-    void editRole(Role role);
+    void editRole(Role role,Integer[] permissionIds);
 
     /**
      * 根据权限名称查找
@@ -103,4 +104,18 @@ public interface RolePermissionService {
      * @return
      */
     List<RolePermission> findRolePession(Integer id);
+
+    /**
+     * 获得角色的权限列表并查看是否checked
+     * @param permissionList
+     * @return
+     */
+    Map<Permission,Boolean> permissionBooleanMap(List<Permission> permissionList);
+
+    /**
+     * 根据id查找角色并附带上权限列表
+     * @param id
+     * @return
+     */
+    Role findRoleWithPermission(Integer id);
 }

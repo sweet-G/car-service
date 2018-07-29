@@ -12,9 +12,13 @@ folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="/static/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css"/>
 <link rel="stylesheet" href="/static/plugins/daterangepicker/daterangepicker.css"/>
 
+<link rel="stylesheet" href="/static/plugins/select2/select2.min.css">
+
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
 <![endif]-->

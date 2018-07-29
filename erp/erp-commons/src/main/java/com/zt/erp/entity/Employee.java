@@ -2,6 +2,7 @@ package com.zt.erp.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 
@@ -40,6 +41,8 @@ public class Employee implements Serializable {
      * 状态：0.禁用 1正常
      */
     private Integer state;
+
+    private List<Role> roleList;
 
     private static final long serialVersionUID = 1L;
 
@@ -91,53 +94,24 @@ public class Employee implements Serializable {
         this.state = state;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        Employee other = (Employee) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getEmployeeName() == null ? other.getEmployeeName() == null : this.getEmployeeName().equals(other.getEmployeeName()))
-            && (this.getEmployeeTel() == null ? other.getEmployeeTel() == null : this.getEmployeeTel().equals(other.getEmployeeTel()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getState() == null ? other.getState() == null : this.getState().equals(other.getState()));
+    public List<Role> getRoleList() {
+        return roleList;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getEmployeeName() == null) ? 0 : getEmployeeName().hashCode());
-        result = prime * result + ((getEmployeeTel() == null) ? 0 : getEmployeeTel().hashCode());
-        result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
-        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
-        result = prime * result + ((getState() == null) ? 0 : getState().hashCode());
-        return result;
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", employeeName=").append(employeeName);
-        sb.append(", employeeTel=").append(employeeTel);
-        sb.append(", password=").append(password);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", state=").append(state);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "Employee{" +
+                "id=" + id +
+                ", employeeName='" + employeeName + '\'' +
+                ", employeeTel='" + employeeTel + '\'' +
+                ", password='" + password + '\'' +
+                ", createTime=" + createTime +
+                ", state=" + state +
+                ", roleList=" + roleList +
+                '}';
     }
 }
