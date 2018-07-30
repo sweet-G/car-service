@@ -98,22 +98,18 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
      * @param id
      */
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public void delEmployee(Integer id) {
         EmployeeRoleExample employeeRoleExample = new EmployeeRoleExample();
         employeeRoleExample.createCriteria().andEmployeeIdEqualTo(id);
 
-        List<EmployeeRole> employeeRoleList = employeeRoleMapper.selectByExample(employeeRoleExample);
+        employeeRoleMapper.deleteByExample(employeeRoleExample);
 
-        EmployeeRole employeeRole = null;
-        if(employeeRoleList != null && employeeRoleList.size() > 0){
-            employeeRole = employeeRoleList.get(0);
-
-            employeeRoleMapper.deleteByPrimaryKey(employeeRole.getId());
+        Employee employee = employeeMapper.selectByPrimaryKey(id);
+        if(employee != null){
+            employeeMapper.deleteByPrimaryKey(id);
         }
-
-        employeeMapper.deleteByPrimaryKey(id);
-
-        logger.info("删除员工 {}",employeeMapper);
+        logger.info("删除员工 {}",employee);
     }
 
     /**

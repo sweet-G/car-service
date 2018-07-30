@@ -63,7 +63,7 @@
                                     treegrid-parent-${permission.pid}
                                 </c:if>">
                                         <td>
-                                            <input type="checkbox" name="permissionId"  value="${permission.id}">
+                                            <input type="checkbox" class="checkParent" name="permissionId"  value="${permission.id}" >
                                         </td>
                                         <td>${permission.permissionName}</td>
                                         <td>${permission.permissionCode}</td>
@@ -101,6 +101,7 @@
 <script src="/static/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(function () {
+
         $("#saveBtn").click(function () {
             $("#saveForm").submit();
         });

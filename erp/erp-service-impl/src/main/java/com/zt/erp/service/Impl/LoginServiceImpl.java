@@ -7,6 +7,7 @@ import com.zt.erp.exception.ServiceException;
 import com.zt.erp.mapper.EmployeeLoginLogMapper;
 import com.zt.erp.mapper.EmployeeMapper;
 import com.zt.erp.service.LoginService;
+import com.zt.erp.util.Constant;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,42 +32,48 @@ public class LoginServiceImpl implements LoginService {
     private EmployeeLoginLogMapper employeeLoginLogMapper;
 
     /**
-     * 登录
-     * @param employeeTel 手机号
-     * @param password    密码
-     * @param loginIp     登录IP
-     * @return employee对象
+     * 根据电话密码查询员工
+     *
+     * @param employeeTel
+     * @param password
+     * @return
      */
     @Override
-    public Employee login(String employeeTel, String password, String loginIp) throws ServiceException {
+    public Employee findByEmployeeTel(String employeeTel, String password) throws ServiceException{
+        password = DigestUtils.md5Hex(password);
 
         EmployeeExample employeeExample = new EmployeeExample();
         employeeExample.createCriteria().andEmployeeTelEqualTo(employeeTel);
         List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
 
-        Employee employee = null;
-        if(employeeList != null && !employeeList.isEmpty()){
-            employee = employeeList.get(0);
-            //判断密码是否正确
-            if(employee.getPassword().equals(DigestUtils.md5Hex(password))){
-                if(employee.getState().equals(Employee.EMPLOYEE_STATE_NOMAL)){
-
-                    EmployeeLoginLog employeeLoginLog = new EmployeeLoginLog();
-                    employeeLoginLog.setLoginIp(loginIp);
-                    employeeLoginLog.setLoginTime(new Date());
-                    employeeLoginLog.setEmployeeId(employee.getId());
-                    employeeLoginLogMapper.insertSelective(employeeLoginLog);
-
-                    logger.info("{}-{}在{}",employee.getEmployeeName(),employee.getEmployeeTel(),new Date());
-                }else{
-                    throw new ServiceException("状态异常，请联系管理员");
-                }
-            }else{
-                throw new ServiceException("用户名或密码错误");
-            }
-        }else{
-            throw new ServiceException("用户名或密码错误");
+        if(employeeList == null){
+            throw new ServiceException("手机号或密码错误!");
         }
-        return null;
+        if(employeeList.size() == 0){
+            throw new ServiceException("手机号或密码错误!");
+        }
+        Employee employee = employeeList.get(0);
+        if(!employee.getPassword().equals(password)){
+            throw new ServiceException("手机号或密码错误!");
+        }
+        logger.debug("{}--{}, 登录系统,时间{}", employee.getEmployeeName(), employee.getEmployeeTel(), new Date());
+        return employee;
     }
+
+    /**
+     * 记录登录者的ip
+     *
+     * @param loginIp
+     * @param id
+     */
+    @Override
+    public void login(String loginIp, Integer id) {
+        EmployeeLoginLog employeeLoginLog = new EmployeeLoginLog();
+
+        employeeLoginLog.setLoginIp(loginIp);
+        employeeLoginLog.setEmployeeId(id);
+        employeeLoginLogMapper.insertSelective(employeeLoginLog);
+    }
+
+
 }

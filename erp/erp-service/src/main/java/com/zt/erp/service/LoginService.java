@@ -10,11 +10,17 @@ import com.zt.erp.exception.ServiceException;
 
 public interface LoginService {
     /**
-     * 登录
-     * @param employeeTel 手机号
-     * @param password 密码
-     * @param loginIp 登录IP
-     * @return employee对象
+     * 根据电话密码查询员工
+     * @param employeeTel
+     * @param password
+     * @return
      */
-    Employee login(String employeeTel, String password, String loginIp) throws ServiceException;
+    Employee findByEmployeeTel(String employeeTel, String password);
+
+    /**
+     * 记录登录者的ip
+     * @param loginIp
+     * @param id
+     */
+    void login(String loginIp, Integer id);
 }

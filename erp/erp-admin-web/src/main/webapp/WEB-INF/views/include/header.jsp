@@ -33,7 +33,7 @@
                             <img src="/static/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                             <p>
-                                李美苏
+                                ${sessionScope.employee.employeeName}
                                 <small>海外事业部</small>
                             </p>
                         </li>
