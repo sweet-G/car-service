@@ -7,7 +7,6 @@ import com.zt.erp.exception.ServiceException;
 import com.zt.erp.mapper.EmployeeLoginLogMapper;
 import com.zt.erp.mapper.EmployeeMapper;
 import com.zt.erp.service.LoginService;
-import com.zt.erp.util.Constant;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,6 +71,16 @@ public class LoginServiceImpl implements LoginService {
 
         employeeLoginLog.setLoginIp(loginIp);
         employeeLoginLog.setEmployeeId(id);
+        employeeLoginLogMapper.insertSelective(employeeLoginLog);
+    }
+
+    /**
+     * 保存日志
+     *
+     * @param employeeLoginLog
+     */
+    @Override
+    public void saveLoginLog(EmployeeLoginLog employeeLoginLog) {
         employeeLoginLogMapper.insertSelective(employeeLoginLog);
     }
 

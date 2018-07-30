@@ -1,14 +1,13 @@
 package com.zt.erp.controller;
 
 import com.zt.erp.entity.Employee;
-import com.zt.erp.entity.EmployeeRole;
 import com.zt.erp.entity.Role;
-import com.zt.erp.exception.ServiceException;
 import com.zt.erp.service.LoginService;
 import com.zt.erp.service.RoleEmployeeService;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -52,11 +49,29 @@ public class LoginController {
     public String login(String employeeTel,
                         String password,
                         String remember,
-                        HttpSession session,
                         HttpServletRequest request,
                         HttpServletResponse response,
                         RedirectAttributes redirectAttributes){
-        Employee employee = null;
+        //获得Subject主体对象
+        Subject subject = SecurityUtils.getSubject();
+        //获得登录的Ip
+        String loginIp = request.getRemoteAddr();
+        //通过employeeTel、password封装UsernamePasswordToken对象
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(employeeTel,DigestUtils.md5Hex(password),loginIp);
+
+        try {
+            subject.login(usernamePasswordToken);
+            return "redirect:/home";
+        } catch (UnknownAccountException |IncorrectCredentialsException e) {
+            redirectAttributes.addFlashAttribute("message", "用户名或者密码错误");
+        } catch (LockedAccountException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        } catch (AuthenticationException e) {
+            redirectAttributes.addFlashAttribute("message", "登录失败");
+        }
+        return "redirect:/";
+
+        /*Employee employee = null;
         try {
             employee = loginService.findByEmployeeTel(employeeTel, password);
         } catch (ServiceException e) {
@@ -95,14 +110,19 @@ public class LoginController {
 
             }
             return "redirect:/home";
-
+*/
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.removeAttribute("employee");
+    /*@GetMapping("/logout")
+    public String logout(RedirectAttributes redirectAttributes){
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        redirectAttributes.addFlashAttribute("message", "已退出，请重新登录");
         return "redirect:/";
-    }
+
+        *//*session.removeAttribute("employee");
+        return "redirect:/";*//*
+    }*/
 
     @GetMapping("/profile")
     public String profile(@PathVariable Integer id,Model model){

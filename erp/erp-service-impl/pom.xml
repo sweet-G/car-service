@@ -97,8 +97,13 @@
         </dependency>
 
         <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-cache</artifactId>
+            <artifactId>shiro-ehcache</artifactId>
             <version>1.4.0</version>
         </dependency>
     </dependencies>

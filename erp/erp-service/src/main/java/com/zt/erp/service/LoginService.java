@@ -1,7 +1,7 @@
 package com.zt.erp.service;
 
 import com.zt.erp.entity.Employee;
-import com.zt.erp.exception.ServiceException;
+import com.zt.erp.entity.EmployeeLoginLog;
 
 /**
  * @author zhangtian
@@ -23,4 +23,10 @@ public interface LoginService {
      * @param id
      */
     void login(String loginIp, Integer id);
+
+    /**
+     * 保存日志
+     * @param employeeLoginLog
+     */
+    void saveLoginLog(EmployeeLoginLog employeeLoginLog);
 }

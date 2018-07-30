@@ -2,7 +2,6 @@ package com.zt.erp.service;
 
 import com.github.pagehelper.PageInfo;
 import com.zt.erp.entity.Employee;
-import com.zt.erp.entity.EmployeeRole;
 import com.zt.erp.entity.Role;
 
 import java.util.List;
@@ -66,5 +65,12 @@ public interface RoleEmployeeService {
      * @param employee
      */
     void updateSateError(Employee employee);
+
+    /**
+     * 根据电话查找
+     * @param employeeTel
+     * @return
+     */
+    Employee findEmployeeByTel(String employeeTel);
 
 }

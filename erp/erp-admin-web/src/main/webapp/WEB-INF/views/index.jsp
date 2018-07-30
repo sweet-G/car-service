@@ -73,6 +73,7 @@
 
 <script>
     $(function(){
+
         $("#btn").click(function () {
             $("#loginForm").submit();
         })

@@ -168,5 +168,24 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
         employeeMapper.updateByPrimaryKeySelective(employee);
     }
 
+    /**
+     * 根据电话查找
+     *
+     * @param employeeTel
+     * @return
+     */
+    @Override
+    public Employee findEmployeeByTel(String employeeTel) {
+       EmployeeExample employeeExample = new EmployeeExample();
+       employeeExample.createCriteria().andEmployeeTelEqualTo(employeeTel);
+
+       List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+
+       if(employeeList != null && employeeList.size() > 0){
+           return employeeList.get(0);
+       }
+        return null;
+    }
+
 
 }
