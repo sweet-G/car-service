@@ -7,6 +7,7 @@ import com.zt.erp.service.RoleEmployeeService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
@@ -73,6 +74,10 @@ public class LoginController {
         try {
             subject.login(usernamePasswordToken);
 
+          /* Employee employee = loginService.findByEmployeeTel(employeeTel, password);
+            Session session = subject.getSession();
+            session.setAttribute("employee",employee);
+*/
             //跳转到登录前的请求页面
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             String url = "/home";
@@ -144,13 +149,18 @@ public class LoginController {
     }*/
 
     @GetMapping("/profile")
-    public String profile(@PathVariable Integer id,Model model){
-        Employee employee = roleEmployeeService.findEmployeeById(id);
+    public String profile(Model model){
+        //Employee employee = roleEmployeeService.findEmployeeById(id);
         List<Role> roleList = roleEmployeeService.findAllRoles();
 
         model.addAttribute("roleList",roleList);
-        model.addAttribute("employee",employee);
+        //model.addAttribute("employee",employee);
         return "profile";
+    }
+
+    @GetMapping("/401")
+    public String unauthorizedUrl(){
+        return "error/401";
     }
 
 }

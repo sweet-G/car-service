@@ -1,3 +1,4 @@
+<%@ page import="com.zt.erp.entity.Employee" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
@@ -40,6 +41,8 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
+                                <% Employee employee = null;
+                                    Object obj = (Employee)session.getAttribute("employee"); %>
                                 <a href="/profile" class="btn btn-default btn-flat">个人设置</a>
                             </div>
                             <div class="pull-right">

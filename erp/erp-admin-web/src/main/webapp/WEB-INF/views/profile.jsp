@@ -51,9 +51,10 @@
             <i class="fa fa-volume-control-phone"></i> 电话：<span>${employee.employeeTel}</span>
         </div>
         <div class="profile">
-            <i class="fa fa-meh-o"></i> 角色：<span><c:forEach items="${roleList}" var="role">
+            <i class="fa fa-meh-o"></i> 角色：<span>
+            <c:forEach items="${roleList}" var="role">
             ${role.roleName}、
-            </c:forEach>/span>
+            </c:forEach> /span>
         </div>
         <div>
             <i class="fa fa-file-text-o"></i> 座右铭：<span>世界很大，努力努力，加油加油，看好你呦</span>

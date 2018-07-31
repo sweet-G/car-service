@@ -36,6 +36,9 @@
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">修改账号</h3>
+                    <div class="box-tools">
+                        <a href="/manage/employee" class="btn btn-success btn-sm">返回</a>
+                    </div>
                 </div>
                 <div class="box-body">
                     <form method="post" class="editForm">

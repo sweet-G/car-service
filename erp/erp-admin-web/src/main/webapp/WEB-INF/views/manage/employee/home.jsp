@@ -51,9 +51,11 @@
             <div class="box">
                 <div class="box-header">
                     <div class="box-tools">
+                        <shiro:hasPermission name="employee:new">
                         <a href="/manage/employee/new" class="btn btn-success btn-sm">
                             <i class="fa fa-plus"></i> 新增账号
                         </a>
+                        </shiro:hasPermission>
                     </div>
                 </div>
                 <div class="box-body">
@@ -85,6 +87,7 @@
                                     <fmt:formatDate value="${employee.createTime}"/>
                                 </td>
                                 <td>
+
                                     <c:choose>
                                         <c:when test="${employee.state == 1}">
                                             <a class="btn btn-warning btn-xs" rel="${employee.id}" href="/manage/employee/${employee.id}/error" title="禁用"><i class="fa fa-lock"></i></a>
@@ -93,8 +96,13 @@
                                             <a class="btn btn-warning btn-xs" rel="${employee.id}" href="/manage/employee/${employee.id}/success" title="正常"><i class="fa fa-unlock"></i></a>
                                         </c:otherwise>
                                     </c:choose>
+                                    <shiro:hasPermission name="employee:edit">
                                     <a class="btn btn-primary btn-xs" href="/manage/employee/${employee.id}/edit"><i class="fa fa-edit"></i></a>
+                                    </shiro:hasPermission>
+
+                                    <shiro:hasPermission name="employee:delete">
                                     <a class="btn btn-danger btn-xs delLink" href="javascript:;" rel="${employee.id}" title="删除"><i class="fa fa-trash"></i></a>
+                                    </shiro:hasPermission>
                                 </td>
                             </tr>
                         </c:forEach>

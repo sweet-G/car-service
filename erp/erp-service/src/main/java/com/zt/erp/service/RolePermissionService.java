@@ -40,7 +40,7 @@ public interface RolePermissionService {
     void delPemission(Integer id) throws SecurityException;
 
     /**
-     * g根据id查找权限
+     * 根据id查找权限
      * @param id
      * @return
      */
@@ -118,4 +118,11 @@ public interface RolePermissionService {
      * @return
      */
     Role findRoleWithPermission(Integer id);
+
+    /**
+     * 根据角色id查找对应权限
+     * @param id
+     * @return
+     */
+    List<Permission> findPermissionByRolesId(Integer id);
 }
