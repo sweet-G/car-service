@@ -146,6 +146,11 @@ public class RolePermissionServiceImpl implements RolePermissionService {
      */
     @Override
     public void editPermission(Permission permission) {
+        if(permission.getPermissionType().equals(Permission.PERMISSION_TYPE_MENU)){
+            permission.setPermissionType(Permission.PERMISSION_TYPE_BUTTON);
+        }else{
+            permission.setPermissionType(Permission.PERMISSION_TYPE_MENU);
+        }
         permissionMapper.updateByPrimaryKeySelective(permission);
     }
 

@@ -8,6 +8,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -40,8 +41,19 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public String login(@CookieValue(defaultValue = "") String employeeTel, Model model){
-            model.addAttribute("employeeTel",employeeTel);
+    public String login(){
+        Subject subject = SecurityUtils.getSubject();
+
+        /*//如果账户通过认证，则退出登录
+        if(subject.isAuthenticated()) {
+            subject.logout();
+        }*/
+
+        //如果记住我，则返回首页
+        if(subject.isRemembered()) {
+            return "home";
+        }
+
         return "index";
     }
 
@@ -50,18 +62,25 @@ public class LoginController {
                         String password,
                         String remember,
                         HttpServletRequest request,
-                        HttpServletResponse response,
                         RedirectAttributes redirectAttributes){
         //获得Subject主体对象
         Subject subject = SecurityUtils.getSubject();
         //获得登录的Ip
         String loginIp = request.getRemoteAddr();
         //通过employeeTel、password封装UsernamePasswordToken对象
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(employeeTel,DigestUtils.md5Hex(password),loginIp);
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(employeeTel,DigestUtils.md5Hex(password),remember != null,loginIp);
 
         try {
             subject.login(usernamePasswordToken);
-            return "redirect:/home";
+
+            //跳转到登录前的请求页面
+            SavedRequest savedRequest = WebUtils.getSavedRequest(request);
+            String url = "/home";
+            if(savedRequest != null){
+                url = savedRequest.getRequestUrl();
+            }
+
+            return "redirect:" + url;
         } catch (UnknownAccountException |IncorrectCredentialsException e) {
             redirectAttributes.addFlashAttribute("message", "用户名或者密码错误");
         } catch (LockedAccountException e) {

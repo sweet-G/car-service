@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,11 +49,8 @@
                 <div class="col-xs-8">
                     <div class="checkbox">
                         <label>
-                            <input
-                            <c:if test="${not empty employeeTel}">
-                                    checked
-                            </c:if>
-                                    name="remember" type="checkbox"> 记住账号
+
+                            <input name="remember" type="checkbox" value="remember"> 记住我
                         </label>
                     </div>
                 </div>
