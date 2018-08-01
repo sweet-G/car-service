@@ -24,7 +24,7 @@ public interface RoleEmployeeService {
      * @param employee
      * @param roleIds
      */
-    void saveEmployee(Employee employee, Integer[] roleIds);
+    void saveEmployee(Employee employee, Integer[] roleIds) throws SecurityException;
 
     /**
      * 根据账号或手机号分页
@@ -73,4 +73,9 @@ public interface RoleEmployeeService {
      */
     Employee findEmployeeByTel(String employeeTel);
 
+    /**
+     * 修改资料
+     * @param employee
+     */
+    void editProfileEmployee(Employee employee);
 }

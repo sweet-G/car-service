@@ -77,6 +77,12 @@
 <%@include file="../../include/js.jsp"%>
 <script>
     $(function () {
+
+        var message = "${message}";
+        if(message){
+            layer.msg(message);
+        }
+
         $("#saveBtn").click(function () {
             $(".saveForm").submit();
         });

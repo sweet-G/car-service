@@ -3,6 +3,7 @@ package com.zt.erp.service;
 import com.zt.erp.entity.Permission;
 import com.zt.erp.entity.Role;
 import com.zt.erp.entity.RolePermission;
+import com.zt.erp.exception.ServiceException;
 
 import java.util.List;
 import java.util.Map;
@@ -35,9 +36,9 @@ public interface RolePermissionService {
     /**
      * 根据id删除
      * @param id
-     * @throws SecurityException
+     * @throws ServiceException
      */
-    void delPemission(Integer id) throws SecurityException;
+    void delPemission(Integer id) throws ServiceException;
 
     /**
      * 根据id查找权限
@@ -57,7 +58,7 @@ public interface RolePermissionService {
      * @param role
      * @param permissionIds
      */
-    void saveRole(Role role, Integer[] permissionIds);
+    void saveRole(Role role, Integer[] permissionIds) throws ServiceException;
 
     /**
      * 查询所有带权限的角色列表

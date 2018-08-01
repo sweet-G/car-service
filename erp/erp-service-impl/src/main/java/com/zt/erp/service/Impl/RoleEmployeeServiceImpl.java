@@ -3,18 +3,23 @@ package com.zt.erp.service.Impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zt.erp.entity.*;
+import com.zt.erp.exception.ServiceException;
 import com.zt.erp.mapper.EmployeeMapper;
 import com.zt.erp.mapper.EmployeeRoleMapper;
 import com.zt.erp.mapper.RoleMapper;
 import com.zt.erp.service.RoleEmployeeService;
 import com.zt.erp.util.Constant;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +60,7 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
      */
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public void saveEmployee(Employee employee, Integer[] roleIds) {
+    public void saveEmployee(Employee employee, Integer[] roleIds) throws ServiceException{
 
         String codePassword = DigestUtils.md5Hex(employee.getPassword());
         employee.setPassword(codePassword);
@@ -65,12 +70,16 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
 
         employeeMapper.insertSelective(employee);
 
-        for(Integer roleId :roleIds){
-            EmployeeRole employeeRole = new EmployeeRole();
-            employeeRole.setEmployeeId(employee.getId());
-            employeeRole.setRoleId(roleId);
+        if(roleIds == null){
+            throw  new ServiceException("请添加角色");
+        }else {
+            for (Integer roleId : roleIds) {
+                EmployeeRole employeeRole = new EmployeeRole();
+                employeeRole.setEmployeeId(employee.getId());
+                employeeRole.setRoleId(roleId);
 
-            employeeRoleMapper.insertSelective(employeeRole);
+                employeeRoleMapper.insertSelective(employeeRole);
+            }
         }
         logger.info("新增员工{} ",employee);
     }
@@ -88,7 +97,20 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
 
         List<Employee> employeeList = employeeMapper.findPageWithRoleMaps(maps);
 
+        Subject subject = SecurityUtils.getSubject();
+        Session session = subject.getSession();
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        Iterator<Employee> employeeIterable = employeeList.iterator();
+        while(employeeIterable.hasNext()){
+            Employee em =employeeIterable.next();
+            if(em.getEmployeeName().equals(employee.getEmployeeName())){
+                employeeIterable.remove();
+            }
+        }
+
         PageInfo<Employee> pageInfo = new PageInfo<>(employeeList);
+
         return pageInfo;
     }
 
@@ -185,6 +207,18 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
            return employeeList.get(0);
        }
         return null;
+    }
+
+    /**
+     * 修改资料
+     *
+     * @param employee
+     */
+    @Override
+    public void editProfileEmployee(Employee employee) {
+        String password = employee.getPassword();
+        employee.setPassword(DigestUtils.md5Hex(password));
+        employeeMapper.updateByPrimaryKeySelective(employee);
     }
 
 

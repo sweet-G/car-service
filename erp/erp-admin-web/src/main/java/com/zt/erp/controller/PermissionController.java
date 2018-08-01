@@ -5,6 +5,7 @@ import com.zt.erp.dto.ResponseBean;
 import com.zt.erp.entity.Permission;
 import com.zt.erp.exception.ServiceException;
 import com.zt.erp.service.RolePermissionService;
+import com.zt.erp.shiro.CustomerFilterChainDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,8 @@ public class PermissionController {
 
     @Autowired
     private RolePermissionService rolePermissionService;
+    @Autowired
+    private CustomerFilterChainDefinition customerFilterChainDefinition;
 
     @GetMapping
     public String home(Model model){
@@ -45,6 +48,9 @@ public class PermissionController {
     @PostMapping("/new")
     public String newPermission(Permission permission){
         rolePermissionService.addPermission(permission);
+
+        //刷新权限
+        customerFilterChainDefinition.updatePemission();
         return "redirect:/manage/permission";
     }
 
@@ -53,6 +59,8 @@ public class PermissionController {
     public ResponseBean delPermission(@PathVariable Integer id){
         try {
             rolePermissionService.delPemission(id);
+            //刷新权限
+            customerFilterChainDefinition.updatePemission();
         } catch (ServiceException e) {
             return ResponseBean.error(e.getMessage());
         }
@@ -107,6 +115,8 @@ public class PermissionController {
 
             permission.setPermissionName(permissionName);
             rolePermissionService.editPermission(permission);
+            //刷新权限
+            customerFilterChainDefinition.updatePemission();
 
             redirectAttributes.addFlashAttribute("message","修改成功");
         }

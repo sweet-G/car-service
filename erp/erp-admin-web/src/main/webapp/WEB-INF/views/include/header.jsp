@@ -41,9 +41,8 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <% Employee employee = null;
-                                    Object obj = (Employee)session.getAttribute("employee"); %>
-                                <a href="/profile" class="btn btn-default btn-flat">个人设置</a>
+                                <%Employee employee = (Employee) session.getAttribute("employee");%>
+                                <a href="/profile/${employee.getId()}" class="btn btn-default btn-flat">个人设置</a>
                             </div>
                             <div class="pull-right">
                                 <a href="/logout" class="btn btn-default btn-flat">安全退出</a>

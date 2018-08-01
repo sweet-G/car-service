@@ -7,6 +7,9 @@ import com.zt.erp.entity.Employee;
 import com.zt.erp.entity.Role;
 import com.zt.erp.exception.ServiceException;
 import com.zt.erp.service.RoleEmployeeService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,8 +56,12 @@ public class EmployeeController {
     }
 
     @PostMapping("/new")
-    public String newEmployee(Employee employee, Integer[] roleId){
-        roleEmployeeService.saveEmployee(employee,roleId);
+    public String newEmployee(Employee employee, Integer[] roleId,RedirectAttributes redirectAttributes){
+        try {
+            roleEmployeeService.saveEmployee(employee,roleId);
+        } catch (ServiceException e) {
+           redirectAttributes.addFlashAttribute("message",e.getMessage());
+        }
         return "redirect:/manage/employee";
     }
 

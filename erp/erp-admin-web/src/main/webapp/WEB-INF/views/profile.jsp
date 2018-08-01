@@ -40,7 +40,7 @@
     </div>
     <!-- /.login-logo -->
 
-    <div class="login-box-body" style="font-size: 20px;font-family: 华文新魏;padding-bottom: 0px">
+    <div class="login-box-body" style="color: #0c0c0c;font-size: 20px;font-family:华文楷体;padding-bottom: 0px">
         <div class="profile" >
             <img src="/static/img/th.jpg" style="width: 100px;height: 100px;margin-left: 110px">
         </div>
@@ -51,10 +51,11 @@
             <i class="fa fa-volume-control-phone"></i> 电话：<span>${employee.employeeTel}</span>
         </div>
         <div class="profile">
-            <i class="fa fa-meh-o"></i> 角色：<span>
+            <i class="fa fa-meh-o"></i> 角色：
             <c:forEach items="${roleList}" var="role">
-            ${role.roleName}、
-            </c:forEach> /span>
+            ${role.roleName}
+            </c:forEach>
+
         </div>
         <div>
             <i class="fa fa-file-text-o"></i> 座右铭：<span>世界很大，努力努力，加油加油，看好你呦</span>
@@ -72,9 +73,16 @@
 <script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/plugins/layer/layer.js"></script>
 
 <script>
     $(function(){
+
+        var message = "${message}";
+        if(message){
+            layer.msg(message);
+        }
+
         $("#btn").click(function () {
             $("#loginForm").submit();
         })

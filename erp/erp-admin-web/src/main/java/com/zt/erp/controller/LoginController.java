@@ -74,10 +74,10 @@ public class LoginController {
         try {
             subject.login(usernamePasswordToken);
 
-          /* Employee employee = loginService.findByEmployeeTel(employeeTel, password);
+           Employee employee = loginService.findByEmployeeTel(employeeTel, password);
             Session session = subject.getSession();
             session.setAttribute("employee",employee);
-*/
+
             //跳转到登录前的请求页面
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             String url = "/home";
@@ -89,7 +89,7 @@ public class LoginController {
         } catch (UnknownAccountException |IncorrectCredentialsException e) {
             redirectAttributes.addFlashAttribute("message", "用户名或者密码错误");
         } catch (LockedAccountException e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("message", "账户冻结，不能登录");
         } catch (AuthenticationException e) {
             redirectAttributes.addFlashAttribute("message", "登录失败");
         }
@@ -148,15 +148,41 @@ public class LoginController {
         return "redirect:/";*//*
     }*/
 
-    @GetMapping("/profile")
-    public String profile(Model model){
-        //Employee employee = roleEmployeeService.findEmployeeById(id);
-        List<Role> roleList = roleEmployeeService.findAllRoles();
+    @GetMapping("/profile/{id:\\d+}")
+    public String profile(@PathVariable Integer id, Model model){
+        Employee employee = roleEmployeeService.findEmployeeById(id);
+        List<Role> roleList = roleEmployeeService.findRoleListByEmployeeId(id);
 
         model.addAttribute("roleList",roleList);
-        //model.addAttribute("employee",employee);
+        model.addAttribute("employee",employee);
         return "profile";
     }
+
+    @PostMapping("/profile/{id:\\d+}")
+    public String profile(){
+        return "profile";
+    }
+
+    @GetMapping("/profile/{id:\\d+}/edit")
+    public String editProfile(@PathVariable Integer id, Model model){
+        Employee employee = roleEmployeeService.findEmployeeById(id);
+        List<Role> roleList = roleEmployeeService.findRoleListByEmployeeId(id);
+
+        model.addAttribute("roleList",roleList);
+        model.addAttribute("employee",employee);
+
+        return "profileEdit";
+    }
+
+    @PostMapping("/profile/{id:\\d+}/edit")
+    public String editProfile(Employee employee,RedirectAttributes redirectAttributes){
+        roleEmployeeService.editProfileEmployee(employee);
+
+        redirectAttributes.addFlashAttribute("message","修改成功");
+        return "redirect:/home";
+    }
+
+
 
     @GetMapping("/401")
     public String unauthorizedUrl(){
