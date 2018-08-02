@@ -12,6 +12,7 @@
         <module>../erp-service</module>
         <module>../erp-service-impl</module>
         <module>../erp-admin-web</module>
+        <module>../erp-front-web</module>
     </modules>
 
     <packaging>pom</packaging>

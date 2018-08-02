@@ -74,7 +74,7 @@ public class LoginController {
         try {
             subject.login(usernamePasswordToken);
 
-           Employee employee = loginService.findByEmployeeTel(employeeTel, password);
+           Employee employee = roleEmployeeService.findEmployeeByTel(employeeTel);
             Session session = subject.getSession();
             session.setAttribute("employee",employee);
 

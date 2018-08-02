@@ -60,7 +60,7 @@ public class EmployeeController {
         try {
             roleEmployeeService.saveEmployee(employee,roleId);
         } catch (ServiceException e) {
-           redirectAttributes.addFlashAttribute("message",e.getMessage());
+            redirectAttributes.addFlashAttribute("message",e.getMessage());
         }
         return "redirect:/manage/employee";
     }

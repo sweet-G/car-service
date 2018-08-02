@@ -97,6 +97,7 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
 
         List<Employee> employeeList = employeeMapper.findPageWithRoleMaps(maps);
 
+        //遍历所有员工，并去除当前员工
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Employee employee = (Employee) session.getAttribute("employee");

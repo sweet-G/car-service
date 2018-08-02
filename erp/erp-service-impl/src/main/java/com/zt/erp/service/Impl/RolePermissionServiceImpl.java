@@ -90,8 +90,8 @@ public class RolePermissionServiceImpl implements RolePermissionService {
             @Override
             public boolean apply(Permission permission) {
                 return permission.getPid().equals(parentId);
-            }
-        }));
+
+            }}));
 
         for(Permission permission : tempList) {
             endList.add(permission);
