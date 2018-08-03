@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">{{message}}
+    <p v-if="see">你看到我了吗？</p>
+    <ul>
+        <li v-for="item in address">{{item}}</li>
+    </ul>
+    <button v-on:click="tryAgain">点我试试</button>
+    <br>
+    <span>{{address.length}}--{{biejingLength}}</span>
+    <div>{{fullName}}</div>
+    <input type="text" v-model="firstName">
+    <!-- <button @click="firstNameClick">firstName</button> -->
+    <button @click="lastNameClick">lastName</button>
+    </div>
+
+    <script src="js/vue.js"></script>
+    <script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello vue',
+            see: '',
+            address: [],
+            //biejingLength: ''
+            firstName:'Rose',
+            lastName:'jack',
+            //fullName:'Rose jack'
+        },
+        methods: {
+            tryAgain: function(){
+                this.message = 'haha';
+                this.see = true;
+
+                
+                var adds = this.address;
+                var count = 0;
+                for(var i = 0; i < adds.length; i++){
+                    if(adds[i] == 'biejing'){
+                        count++;
+                    }
+                }
+                console.log(count);
+                this.biejingLength = count;
+            },
+            firstNameClick:function(){
+                this.firstName = 'alex'
+            },
+            lastNameClick:function(){
+                this.lastName = 'dowan'
+            },
+        },
+        mounted: function() {
+            this.address= ['biejing','shanghai','biejing'];
+        },
+        computed: {
+            // biejingLength:function(){
+            //     var adds = this.address;
+            //     var count = 0;
+            //     for(var i = 0; i < adds.length; i++){
+            //         if(adds[i] == 'biejing'){
+            //             count++;
+            //         }
+            //     }
+            //     return count;
+            // }
+            fullName: function(){
+                return  this.firstName + " " + this.lastName;
+            }
+        },
+        // watch:{
+        //     firstName:function(val){
+        //         this.fullName = val + " " + this.lastName;
+        //     },
+        //     lastName:function(val){
+        //         this.fullName = this.firstName + " " + val;
+        //     },
+        // }
+    })
+    </script>
+</body>
+</html>
