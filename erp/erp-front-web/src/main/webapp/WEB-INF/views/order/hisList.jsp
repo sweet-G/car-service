@@ -107,7 +107,7 @@
             last:'末页',
             prev:'上一页',
             next:'下一页',
-            href:"/order/undone/list?p={{number}}&startTime=" + startDate + "&endTime=" + endDate + "&licenceNo=" + encodeURIComponent('${param.licenceNo}') + "&tel=${param.tel}"
+            href:"/order/done/list?p={{number}}&startTime=" + startDate + "&endTime=" + endDate + "&licenceNo=" + encodeURIComponent('${param.licenceNo}') + "&tel=${param.tel}"
         });
         var locale = {
             "format": 'YYYY-MM-DD',

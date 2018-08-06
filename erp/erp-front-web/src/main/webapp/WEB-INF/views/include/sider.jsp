@@ -18,10 +18,8 @@
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/order/list"><i class="fa fa-circle-o"></i>订单查询</a></li>
+                    <li><a href="/order/undone/list"><i class="fa fa-circle-o"></i>订单查询</a></li>
                     <li><a href="/order/new"><i class="fa fa-circle-o"></i>新建订单</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i>历史订单查询</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i>未完成订单查询</a></li>
                 </ul>
             </li>
             <!-- 维修服务 -->

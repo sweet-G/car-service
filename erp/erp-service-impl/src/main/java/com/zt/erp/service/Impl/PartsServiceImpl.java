@@ -139,4 +139,17 @@ public class PartsServiceImpl implements PartsService {
 
         return partsMapper.selectByExample(partsExample);
     }
+
+    /**
+     * 根据id查找配件类型
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Parts> findPartsByType(Integer id) {
+        PartsExample partsExample = new PartsExample();
+        partsExample.createCriteria().andTypeIdEqualTo(id);
+        return partsMapper.selectByExample(partsExample);
+    }
 }

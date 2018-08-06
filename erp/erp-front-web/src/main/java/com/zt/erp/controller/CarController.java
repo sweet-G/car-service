@@ -21,12 +21,12 @@ public class CarController {
     private CarService carService;
 
     @PostMapping("/new")
-    public String newCar(Car car, Customer customer, Model model){
+    @ResponseBody
+    public ResponseBean newCar(Car car, Customer customer){
         carService.addCarInfo(car,customer);
+        car.setCustomer(customer);
 
-        model.addAttribute("car",car);
-        model.addAttribute("customer",customer);
-        return "order/new";
+        return ResponseBean.success(car);
     }
 
     @GetMapping("/check")

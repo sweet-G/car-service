@@ -75,4 +75,11 @@ public interface PartsService {
      * @return
      */
     List<Parts> findByTypeId(Integer id);
+
+    /**
+     * 根据id查找配件类型
+     * @param id
+     * @return
+     */
+    List<Parts> findPartsByType(Integer id);
 }
