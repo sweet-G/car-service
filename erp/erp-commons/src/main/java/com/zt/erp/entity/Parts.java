@@ -21,6 +21,8 @@ public class Parts {
 
     private Type type;
 
+    private Integer num;
+
     public Integer getId() {
         return id;
     }
@@ -93,6 +95,14 @@ public class Parts {
         this.type = type;
     }
 
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
     @Override
     public String toString() {
         return "Parts{" +
@@ -105,6 +115,7 @@ public class Parts {
                 ", typeId=" + typeId +
                 ", address='" + address + '\'' +
                 ", type=" + type +
+                ", num=" + num +
                 '}';
     }
 }

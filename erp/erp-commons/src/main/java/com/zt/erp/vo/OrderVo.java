@@ -10,10 +10,19 @@ import java.util.List;
 
 public class OrderVo {
 
+    private Integer id;
     private Integer carId;
     private Integer serviceTypeId;
     private BigDecimal fee;
     private List<PartsVo> partsLists;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getCarId() {
         return carId;
@@ -50,7 +59,8 @@ public class OrderVo {
     @Override
     public String toString() {
         return "OrderVo{" +
-                "carId=" + carId +
+                "id=" + id +
+                ", carId=" + carId +
                 ", serviceTypeId=" + serviceTypeId +
                 ", fee=" + fee +
                 ", partsLists=" + partsLists +

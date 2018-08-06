@@ -82,4 +82,5 @@ public interface PartsService {
      * @return
      */
     List<Parts> findPartsByType(Integer id);
+
 }

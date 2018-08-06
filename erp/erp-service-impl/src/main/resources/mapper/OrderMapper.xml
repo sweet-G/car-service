@@ -76,7 +76,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from order
+    from `order`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,15 +95,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
+    from `order`
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from order
+    delete from `order`
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.zt.erp.entity.OrderExample">
-    delete from order
+    delete from `order`
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -179,39 +179,79 @@
       <result property="tel" column="tel"/>
     </association>
   </resultMap>
-    <select id="findUndonePageByParam" resultMap="orderMapWithDetail">
+  <select id="findUndonePageByParam" resultMap="orderMapWithDetail">
+    SELECT
+    `order`.*, car.car_type,
+    car.licence_no,
+    car.car_no,
+    car.customer_id,
+    customer.user_name,
+    customer.id_card,
+    customer.tel
+    FROM
+    `order`
+    LEFT JOIN car ON `order`.car_id = car.id
+    LEFT JOIN customer ON car.customer_id = customer.id
+    <where>
+      <if test="licenceNo != null and licenceNo != ''">
+        And car.licence_no = #{licenceNo}
+      </if>
+      <if test="tel != null and tel != ''">
+        And customer.tel = #{tel}
+      </if>
+      <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+        AND (order.create_time >= #{startTime} and order.create_time &lt;= #{endTime})
+      </if>
+      <if test="state != null and state != ''">
+        And order.state =  #{state}
+      </if>
+      <if test="exState != null and exState != ''">
+        And order.state !=  #{exState}
+      </if>
+    </where>
+    order by order.create_time desc
+
+  </select>
+    <select id="findCarAndCustomerById" resultMap="orderMapWithDetail">
       SELECT
       `order`.*, car.car_type,
-      car.licence_no,
-      car.car_no,
-      car.customer_id,
-      customer.user_name,
-      customer.id_card,
-      customer.tel
+          car.licence_no,
+          car.car_no,
+          car.customer_id,
+          customer.user_name,
+          customer.id_card,
+          customer.tel
       FROM
       `order`
       LEFT JOIN car ON `order`.car_id = car.id
-      LEFT JOIN customer ON car.customer_id = customer.id
-      <where>
-        <if test="licenceNo != null and licenceNo != ''">
-          And car.licence_no = #{licenceNo}
-        </if>
-        <if test="tel != null and tel != ''">
-          And customer.tel = #{tel}
-        </if>
-        <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
-          AND (order.create_time >= #{startTime} and order.create_time &lt;= #{endTime})
-        </if>
-        <if test="state != null and state != ''">
-          And order.state =  #{state}
-        </if>
-        <if test="exState != null and exState != ''">
-          And order.state !=  #{exState}
-        </if>
-      </where>
-      order by order.create_time desc
+      LEFT JOIN customer ON customer.id = car.customer_id
+      WHERE
+      `order`.id = #{id}
+
     </select>
-    <update id="updateByExampleSelective" parameterType="map">
+  <select id="findOrderAndPartsById" resultType="com.zt.erp.entity.Parts">
+  SELECT
+      parts.parts_name,
+      parts.parts_no,
+      parts.sale_price,
+      order_parts.num
+  FROM
+      order_parts
+  INNER JOIN `order` ON order_parts.order_id = `order`.id
+  INNER JOIN parts ON order_parts.parts_id = parts.id
+  WHERE
+      order_parts.order_id = #{id}
+  </select>
+  <select id="findOrderAndServiceTypeById" resultType="com.zt.erp.entity.ServiceType">
+    SELECT
+	*
+    FROM
+        `order`
+    LEFT JOIN service_type ON service_type.id = `order`.service_type_id
+    WHERE
+        `order`.id = #{id}
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
     update `order`
     <set>
       <if test="record.id != null">

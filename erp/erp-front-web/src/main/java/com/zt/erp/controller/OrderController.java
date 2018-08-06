@@ -4,15 +4,18 @@ import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.zt.erp.dto.ResponseBean;
 import com.zt.erp.entity.*;
+import com.zt.erp.exception.ServiceException;
+import com.zt.erp.service.CarService;
 import com.zt.erp.service.OrderService;
 import com.zt.erp.service.PartsService;
+import com.zt.erp.vo.OrderInfoVo;
 import com.zt.erp.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.jws.WebParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,9 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private PartsService partsService;
+    @Autowired
+    private CarService carService;
+
 
     @GetMapping("/new")
     public String newOrder() {
@@ -111,9 +117,78 @@ public class OrderController {
     }
 
     @GetMapping("/{id:\\d+}/detail")
-    public String detail(@PathVariable Integer id, Model model){
+    public String detail(@PathVariable Integer id, Model model) throws ServiceException {
+        Order order = orderService.findOrderWithCarAndCustomerById(id);
 
+        List<Parts> partsList = orderService.findOrderWithPartsById(id);
+
+        ServiceType serviceType = orderService.findOrderWithServiceTypeById(order.getServiceTypeId());
+
+        model.addAttribute("order",order);
+        model.addAttribute("partsList",partsList);
+        model.addAttribute("serviceType",serviceType);
         return "order/detail";
     }
+
+    @GetMapping("/{id:\\d+}/del")
+    public String delOrder(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        orderService.del(id);
+        redirectAttributes.addFlashAttribute("message","删除成功");
+        return "redirect:/order/undone/list";
+    }
+
+    @GetMapping("/{id:\\d+}/trans")
+    @ResponseBody
+    public ResponseBean transOrder(@PathVariable Integer id) throws ServiceException{
+        try {
+            orderService.findOrderWithTransById(id);
+        } catch (ServiceException e) {
+            return ResponseBean.error(e.getMessage());
+        }
+        return ResponseBean.success();
+    }
+
+    @GetMapping("/{id:\\d+}/edit")
+    public String editOrder(@PathVariable Integer id, Model model){
+        model.addAttribute("orderId",id);
+        return "order/edit";
+    }
+
+    @PostMapping("/{id:\\d+}/edit")
+    @ResponseBody
+    public ResponseBean editOrder(String json) throws ServiceException{
+        Gson gson = new Gson();
+        OrderVo orderVo = gson.fromJson(json, OrderVo.class);
+
+        try {
+            orderService.edit(orderVo);
+        } catch (Exception e) {
+            return ResponseBean.error(e.getMessage());
+        }
+        return ResponseBean.success();
+    }
+
+    @GetMapping("/{id:\\d+}/info")
+    @ResponseBody
+    public ResponseBean editOrderInfo(@PathVariable Integer id) throws ServiceException {
+        try {
+            Order order = orderService.findOrderWithCarAndCustomerById(id);
+
+            List<Parts> partsList = orderService.findOrderWithPartsById(order.getId());
+
+            ServiceType serviceType = orderService.findOrderWithServiceTypeById(order.getServiceTypeId());
+
+            OrderInfoVo orderInfoVo = new OrderInfoVo();
+            orderInfoVo.setOrder(order);
+            orderInfoVo.setServiceType(serviceType);
+            orderInfoVo.setPartsList(partsList);
+
+            return ResponseBean.success(orderInfoVo);
+        } catch (ServiceException e) {
+            ResponseBean.error(e.getMessage());
+        }
+        return null;
+    }
+
 
 }

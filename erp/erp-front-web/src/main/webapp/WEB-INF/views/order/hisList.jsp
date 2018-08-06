@@ -74,7 +74,7 @@
                                 <td>${page.stateName}</td>
                                 <td>${page.fee}</td>
                                 <td><fm:formatDate value="${page.createTime}" pattern="yyyy-MM-dd"/></td>
-                                <td><a href="#" class="label label-primary">详情</a></td>
+                                <td><a href="/order/${page.id}/detail" class="label label-primary">详情</a></td>
                             </tr>
                         </c:forEach>
 
@@ -99,6 +99,15 @@
 <%@ include file="../include/js.jsp" %>
 <script>
     $(function(){
+        var message = "${message}";
+        if(message){
+            layer.msg(message);
+        }
+        var startDate = "${param.startTime}";
+        var endDate = "${param.endTime}";
+        if(startDate && endDate) {
+            $('#time').val(startDate + " / " + endDate);
+        }
 
         $("#pagination").twbsPagination({
             totalPages : ${page.pages},
@@ -122,11 +131,7 @@
             "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
             "firstDay": 1
         };
-        var startDate = "${param.startTime}";
-        var endDate = "${param.endTime}";
-        if(startDate && endDate) {
-            $('#time').val(startDate + " / " + endDate);
-        }
+
         $('#time').daterangepicker({
             autoUpdateInput:false,
             "locale": locale,

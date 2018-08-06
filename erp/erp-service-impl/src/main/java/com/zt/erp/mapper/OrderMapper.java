@@ -5,6 +5,8 @@ import com.zt.erp.entity.OrderExample;
 import java.util.List;
 import java.util.Map;
 
+import com.zt.erp.entity.Parts;
+import com.zt.erp.entity.ServiceType;
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderMapper {
@@ -31,4 +33,10 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
 
     List<Order> findUndonePageByParam(Map<String,Object> maps);
+
+    Order findCarAndCustomerById(Integer id);
+
+    List<Parts> findOrderAndPartsById(Integer id);
+
+    ServiceType findOrderAndServiceTypeById(Integer id);
 }

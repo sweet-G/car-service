@@ -201,6 +201,15 @@
     <select id="selectPartsNo" resultType="com.zt.erp.entity.Parts">
       select * from parts where parts_name = #{partsNo}
     </select>
+    <select id="findOrderAndPartsById" resultType="com.zt.erp.entity.Parts">
+      SELECT
+          parts.*, order_parts.num
+      FROM
+          order_parts
+      INNER JOIN parts ON order_parts.parts_id = parts.id
+      WHERE
+          order_parts.order_id = #{orderId}
+    </select>
 
     <update id="updateByExampleSelective" parameterType="map">
     update parts

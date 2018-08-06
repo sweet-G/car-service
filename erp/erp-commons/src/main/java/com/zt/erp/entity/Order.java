@@ -10,14 +10,16 @@ import java.util.Date;
 public class Order implements Serializable {
 
     /**
-     * 1.等待维修 2.维修中 3.质检中 4.结算中 5.完成
-     *
+     * 订单状态 1：新订单 2：已下发 3：维修中 4：维修完成 5：质检中 6：结算中 7：完成
      */
-    public static final String ORDER_STATE_NEW="1";
-    public static final String ORDER_STATE_SERVICE="2";
-    public static final String ORDER_STATE_QUALIY="3";
-    public static final String ORDER_STATE_MONEY="4";
-    public static final String ORDER_STATE_DONE="5";
+    public static final String ORDER_STATE_NEW = "1";
+    public static final String ORDER_STATE_TRANS = "2";
+    public static final String ORDER_STATE_FIXING = "3";
+    public static final String ORDER_STATE_FIXED = "4";
+    public static final String ORDER_STATE_CHECKING = "5";
+    public static final String ORDER_STATE_SETTLEMENT = "6";
+    public static final String ORDER_STATE_DONE = "7";
+
 
 
     private Integer id;
@@ -131,27 +133,25 @@ public class Order implements Serializable {
                 '}';
     }
 
-    /**
-     * 1.等待维修 2.维修中 3.质检中 4.结算中 5.完成
-     *
-     */
-    public String getStateName(){
-        if(getState().equals(Order.ORDER_STATE_NEW)){
+    public String getStateName() {
+        //订单状态 1：新订单 2：已下发 3：维修中 4：维修完成 5：质检中 6：结算中 7：完成
+        if(getState().equals(ORDER_STATE_NEW)) {
             return "等待维修";
-        }
-        if(getState().equals(Order.ORDER_STATE_SERVICE)){
+        } else if(getState().equals(ORDER_STATE_TRANS)) {
             return "维修中";
-        }
-        if(getState().equals(Order.ORDER_STATE_QUALIY)){
+        } else if(getState().equals(ORDER_STATE_FIXING)) {
+            return "维修中";
+        } else if(getState().equals(ORDER_STATE_FIXED)) {
+            return "维修中";
+        } else if(getState().equals(ORDER_STATE_CHECKING)) {
             return "质检中";
-        }
-        if(getState().equals(Order.ORDER_STATE_MONEY)){
+        } else if(getState().equals(ORDER_STATE_SETTLEMENT)) {
             return "结算中";
-        }
-        if(getState().equals(Order.ORDER_STATE_DONE)){
+        } else if(getState().equals(ORDER_STATE_DONE)) {
             return "完成";
         }
         return "";
     }
+
 
 }

@@ -35,4 +35,6 @@ public interface PartsMapper {
     List<Parts> findPageWithTypeMap(Map<String, Object> maps);
 
     Parts selectPartsNo(String partNo);
+
+    List<Parts> findOrderAndPartsById(Integer id);
 }

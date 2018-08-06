@@ -152,4 +152,6 @@ public class PartsServiceImpl implements PartsService {
         partsExample.createCriteria().andTypeIdEqualTo(id);
         return partsMapper.selectByExample(partsExample);
     }
+
+
 }
