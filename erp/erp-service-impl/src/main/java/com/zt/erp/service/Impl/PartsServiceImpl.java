@@ -6,6 +6,7 @@ import com.zt.erp.entity.Parts;
 import com.zt.erp.entity.PartsExample;
 import com.zt.erp.entity.Type;
 import com.zt.erp.entity.TypeExample;
+import com.zt.erp.exception.ServiceException;
 import com.zt.erp.mapper.PartsMapper;
 import com.zt.erp.mapper.TypeMapper;
 import com.zt.erp.service.PartsService;
@@ -93,8 +94,20 @@ public class PartsServiceImpl implements PartsService {
      * @param parts
      */
     @Override
-    public void update(Parts parts) {
-        partsMapper.updateByPrimaryKeySelective(parts);
+    public void update(Parts parts) throws ServiceException{
+        PartsExample partsExample = new PartsExample();
+        partsExample.createCriteria().andInventoryEqualTo(parts.getInventory());
+        List<Parts> partsList = partsMapper.selectByExample(partsExample);
+
+        Parts p = null;
+        if(partsList != null && partsList.size() > 0){
+            p = partsList.get(0);
+            if(parts.getInventory() > 0 && p.getInventory() < parts.getInventory()){
+                partsMapper.updateByPrimaryKeySelective(parts);
+            }else{
+                throw new ServiceException("库存数量不正确");
+            }
+        }
     }
 
     /**
@@ -104,7 +117,9 @@ public class PartsServiceImpl implements PartsService {
      */
     @Override
     public void saveParts(Parts parts) {
-       partsMapper.insertSelective(parts);
+        if(parts.getInventory() > 0){
+            partsMapper.insertSelective(parts);
+        }
     }
 
     /**

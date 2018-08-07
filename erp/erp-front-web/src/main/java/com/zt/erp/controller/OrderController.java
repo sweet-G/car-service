@@ -120,7 +120,7 @@ public class OrderController {
     public String detail(@PathVariable Integer id, Model model) throws ServiceException {
         Order order = orderService.findOrderWithCarAndCustomerById(id);
 
-        List<Parts> partsList = orderService.findOrderWithPartsById(id);
+        List<Parts> partsList = orderService.findOrderWithPartsById(order.getId());
 
         ServiceType serviceType = orderService.findOrderWithServiceTypeById(order.getServiceTypeId());
 

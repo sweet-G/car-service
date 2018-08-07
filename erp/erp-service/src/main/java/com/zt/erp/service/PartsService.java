@@ -3,6 +3,7 @@ package com.zt.erp.service;
 import com.github.pagehelper.PageInfo;
 import com.zt.erp.entity.Parts;
 import com.zt.erp.entity.Type;
+import com.zt.erp.exception.ServiceException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public interface PartsService {
      * 根据id更新
      * @param parts
      */
-    void update(Parts parts);
+    void update(Parts parts)throws ServiceException;
 
     /**
      * 新增

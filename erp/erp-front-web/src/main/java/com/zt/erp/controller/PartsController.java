@@ -3,9 +3,11 @@ package com.zt.erp.controller;
 import com.github.pagehelper.PageInfo;
 import com.zt.erp.entity.Parts;
 import com.zt.erp.entity.Type;
+import com.zt.erp.exception.ServiceException;
 import com.zt.erp.service.PartsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -72,10 +74,15 @@ public class PartsController {
     }
 
     @PostMapping("/{id:\\d+}/edit")
-    public String update(Parts parts, RedirectAttributes redirectAttributes){
-        partsService.update(parts);
-        redirectAttributes.addFlashAttribute("message","修改成功");
-        return "redirect:/parts";
+    public String update(Parts parts, RedirectAttributes redirectAttributes) throws ServiceException {
+        try {
+            partsService.update(parts);
+            redirectAttributes.addFlashAttribute("message","修改成功");
+            return "redirect:/parts";
+        } catch (ServiceException e) {
+            redirectAttributes.addFlashAttribute("message",e.getMessage());
+        }
+        return null;
     }
 
     @GetMapping("/new")
