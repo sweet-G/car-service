@@ -9,7 +9,7 @@ import javax.jms.*;
  * @date 2018/8/7
  */
 
-public class Test {
+public class QueueTest {
 
     @org.junit.Test
     public void producerMessage() throws JMSException {
@@ -31,7 +31,7 @@ public class Test {
             //持久
             producer.setDeliveryMode(DeliveryMode.PERSISTENT);
             //6. 发送消息
-            TextMessage textMessage = session.createTextMessage("hello-jms-04");
+            TextMessage textMessage = session.createTextMessage("hello-jms-05");
             producer.send(textMessage);
 
             session.commit();
@@ -61,8 +61,8 @@ public class Test {
         //6. 接收消息
        consumer.setMessageListener(new MessageListener() {
            public void onMessage(Message message) {
+               TextMessage textMessage = (TextMessage) message;
                try {
-                   TextMessage textMessage = (TextMessage) message;
                    System.out.print(textMessage.getText());
                    /*if("hello-jms-04".equals(textMessage.getText())){
                        throw new JMSException("error");
@@ -80,7 +80,7 @@ public class Test {
            }
        });
         //一直监听生产者
-        System.in.read();
+       System.in.read();
        //7. 释放资源
         consumer.close();
         session.close();
