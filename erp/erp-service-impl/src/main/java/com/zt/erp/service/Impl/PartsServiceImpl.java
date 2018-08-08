@@ -168,5 +168,16 @@ public class PartsServiceImpl implements PartsService {
         return partsMapper.selectByExample(partsExample);
     }
 
+    /**
+     * 根据订单id查找配件
+     *
+     * @param orderId
+     * @return
+     */
+    @Override
+    public List<Parts> findAllOrderWithParts(Integer orderId) {
+        return partsMapper.findOrderAndPartsById(orderId);
+    }
+
 
 }

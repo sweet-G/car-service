@@ -251,7 +251,21 @@
     WHERE
         `order`.id = #{id}
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="findFixWithPage" resultType="com.zt.erp.entity.Order">
+      SELECT
+      `order`.*, service_type.service_name,
+      car.car_type
+      FROM
+      `order`
+      LEFT JOIN service_type ON `order`.service_type_id = service_type.id
+      LEFT JOIN car ON `order`.car_id = car.id
+      <where>
+      <if test="orderId != null and orderId != ''">
+        And `order`.id = #{orderId}
+      </if>
+      </where>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update `order`
     <set>
       <if test="record.id != null">

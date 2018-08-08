@@ -39,4 +39,6 @@ public interface OrderMapper {
     List<Parts> findOrderAndPartsById(Integer id);
 
     ServiceType findOrderAndServiceTypeById(Integer id);
+
+    List<Order> findFixWithPage(Map<String,Object> maps);
 }
