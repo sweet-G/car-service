@@ -208,7 +208,7 @@
           order_parts
       INNER JOIN parts ON order_parts.parts_id = parts.id
       WHERE
-          order_parts.order_id = #{orderId}
+          order_parts.order_id = #{id}
     </select>
 
     <update id="updateByExampleSelective" parameterType="map">

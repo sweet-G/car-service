@@ -138,11 +138,11 @@ public class Order implements Serializable {
         if(getState().equals(ORDER_STATE_NEW)) {
             return "等待维修";
         } else if(getState().equals(ORDER_STATE_TRANS)) {
-            return "已下发";
+            return "维修中";
         } else if(getState().equals(ORDER_STATE_FIXING)) {
             return "维修中";
         } else if(getState().equals(ORDER_STATE_FIXED)) {
-            return "维修完成";
+            return "维修中";
         } else if(getState().equals(ORDER_STATE_CHECKING)) {
             return "质检中";
         } else if(getState().equals(ORDER_STATE_SETTLEMENT)) {

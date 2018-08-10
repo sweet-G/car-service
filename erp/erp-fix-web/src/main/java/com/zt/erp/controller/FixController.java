@@ -1,18 +1,18 @@
 package com.zt.erp.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.zt.erp.entity.Order;
-import com.zt.erp.entity.OrderParts;
-import com.zt.erp.entity.Parts;
-import com.zt.erp.service.FixService;
-import com.zt.erp.service.OrderService;
-import com.zt.erp.service.PartsService;
+import com.zt.erp.dto.ResponseBean;
+import com.zt.erp.entity.Employee;
+import com.zt.erp.entity.FixOrder;
+import com.zt.erp.entity.FixOrderParts;
+import com.zt.erp.exception.ServiceException;
+import com.zt.erp.service.FixOrderService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +27,7 @@ import java.util.Map;
 public class FixController {
 
     @Autowired
-    private FixService fixService;
-    @Autowired
-    private PartsService partsService;
+    private FixOrderService fixOrderService;
 
     @GetMapping("/list")
     public String list(@RequestParam(name = "p",defaultValue = "1",required = false) Integer pageNo,
@@ -40,11 +38,47 @@ public class FixController {
         maps.put("pageNo",pageNo);
         maps.put("orderId",orderId);
 
-        PageInfo<Order> page = fixService.findPageByMap(pageNo,maps);
-        List<Parts> partsList = partsService.findAllOrderWithParts(orderId);
+        PageInfo<FixOrder> page = fixOrderService.findPageByMap(pageNo,maps);
 
+        List<FixOrder> fixOrderList = fixOrderService.findFixOrderListWithParts();
+
+        model.addAttribute("fixOrderList",fixOrderList);
         model.addAttribute("page",page);
-        model.addAttribute("partsList",partsList);
         return "fix/list";
     }
+
+    @GetMapping("/{id:\\d+}/receive")
+    @ResponseBody
+    public ResponseBean receiveTask(@PathVariable Integer id) throws ServiceException{
+        try {
+            //获得当前员工
+            Subject subject = SecurityUtils.getSubject();
+            Employee employee = (Employee) subject.getPrincipal();
+            fixOrderService.taskReceive(id, employee);
+
+            return ResponseBean.success();
+        } catch (ServiceException e) {
+            return ResponseBean.error(e.getMessage());
+        }
+
+    }
+
+    @GetMapping("/{id:\\d+}/detail")
+    public String detail(@PathVariable Integer id, Model model){
+        FixOrder fixOrder = fixOrderService.findFixOrderById(id);
+
+        Subject subject = SecurityUtils.getSubject();
+        Employee employee = (Employee) subject.getPrincipal();
+
+        model.addAttribute("employeeId", employee.getId());
+        model.addAttribute("fixOrder", fixOrder);
+        return "fix/detail";
+    }
+
+    @GetMapping("/{id:\\d+}/done")
+    public String done(@PathVariable Integer id){
+        fixOrderService.taskDone(id);
+        return "redirect:/fix/list";
+    }
+
 }

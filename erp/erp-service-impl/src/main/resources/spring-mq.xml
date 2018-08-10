@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--重试机制 -->
+    <bean id="redeliveryPolicy" class="org.apache.activemq.RedeliveryPolicy">
+        <property name="maximumRedeliveries" value="3"/>
+        <property name="initialRedeliveryDelay" value="3000"/>
+        <property name="redeliveryDelay" value="3000"/>
+    </bean>
+
+
+    <!--1. 配置ActiveMQ ConnectionFactory-->
+    <bean id="activeMQConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+        <property name="redeliveryPolicy" ref="redeliveryPolicy"/>
+    </bean>
+    <!--2. Spring适配的连接工厂-->
+    <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="activeMQConnectionFactory"/>
+    </bean>
+    <!-- 3. 配置jmsTemplate-->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <!--配置的默认的目的地地址-->
+        <property name="defaultDestinationName" value="order-queue"/>
+    </bean>
+
+    <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <!--线程池的配置，控制在3-10个线程-->
+        <property name="concurrency" value="3-10"/>
+        <!--客户端签收模式-->
+        <property name="sessionAcknowledgeMode" value="2"/>
+    </bean>
+
+    <!--4. 配置消费者的监听器-->
+    <bean id="fixOrderListener" class="com.zt.erp.mq.FixOrderListener"/>
+    <bean id="orderStateListener" class="com.zt.erp.mq.OrderStateListener"/>
+    <bean id="orderPartsListener" class="com.zt.erp.mq.OrderPartsListener"/>
+
+
+    <!--5. 配置多个监听器-->
+    <jms:listener-container acknowledge="client" concurrency="3-10">
+        <jms:listener destination="order-queue" ref="fixOrderListener"/>
+        <jms:listener destination="state-queue" ref="orderStateListener"/>
+        <jms:listener destination="parts-queue" ref="orderPartsListener"/>
+    </jms:listener-container>
+
+</beans>

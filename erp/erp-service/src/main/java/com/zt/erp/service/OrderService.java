@@ -82,4 +82,15 @@ public interface OrderService {
      */
     void edit(OrderVo orderVo)  throws ServiceException;
 
+    /**
+     *
+     * @return
+     */
+    List<Order> findAllOrder();
+
+    /**
+     *根据消息队列json修改order状态
+     * @param json
+     */
+    void editOrderState(String json);
 }

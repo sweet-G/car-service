@@ -31,10 +31,7 @@
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/fix/list"><i class="fa fa-circle-o"></i>维修任务</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i>历史订单查询</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i>未完成订单查询</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i>新建订单</a></li>
+                    <li><a href="/fix/list"><i class="fa fa-circle-o"></i>维修任务领取</a></li>
                 </ul>
             </li>
             <!-- 库存管理 -->

@@ -171,6 +171,7 @@
       <result property="carNo" column="car_no"/>
       <result property="licenceNo" column="licence_no"/>
       <result property="carType" column="car_type"/>
+      <result property="color" column="color"/>
     </association>
     <association property="customer" javaType="com.zt.erp.entity.Customer">
       <id property="id" column="customer_id" />
@@ -218,6 +219,7 @@
           car.licence_no,
           car.car_no,
           car.customer_id,
+          car.color,
           customer.user_name,
           customer.id_card,
           customer.tel

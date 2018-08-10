@@ -2,17 +2,20 @@ package com.zt.erp.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.zt.erp.entity.Parts;
-import com.zt.erp.entity.PartsExample;
-import com.zt.erp.entity.Type;
-import com.zt.erp.entity.TypeExample;
+import com.google.gson.Gson;
+import com.zt.erp.entity.*;
 import com.zt.erp.exception.ServiceException;
 import com.zt.erp.mapper.PartsMapper;
+import com.zt.erp.mapper.PartsStreamMapper;
 import com.zt.erp.mapper.TypeMapper;
 import com.zt.erp.service.PartsService;
 import com.zt.erp.util.Constant;
+import com.zt.erp.vo.FixOrderPartsVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -24,11 +27,15 @@ import java.util.Map;
 @Service
 public class PartsServiceImpl implements PartsService {
 
+    private Logger logger = LoggerFactory.getLogger(PartsServiceImpl.class);
+
     @Autowired
     private PartsMapper partsMapper;
 
     @Autowired
     private TypeMapper typeMapper;
+    @Autowired
+    private PartsStreamMapper partsStreamMapper;
 
     @Override
     public Parts findById(Integer id) {
@@ -95,19 +102,7 @@ public class PartsServiceImpl implements PartsService {
      */
     @Override
     public void update(Parts parts) throws ServiceException{
-        PartsExample partsExample = new PartsExample();
-        partsExample.createCriteria().andInventoryEqualTo(parts.getInventory());
-        List<Parts> partsList = partsMapper.selectByExample(partsExample);
-
-        Parts p = null;
-        if(partsList != null && partsList.size() > 0){
-            p = partsList.get(0);
-            if(parts.getInventory() > 0 && p.getInventory() < parts.getInventory()){
-                partsMapper.updateByPrimaryKeySelective(parts);
-            }else{
-                throw new ServiceException("库存数量不正确");
-            }
-        }
+        partsMapper.updateByPrimaryKeySelective(parts);
     }
 
     /**
@@ -171,12 +166,43 @@ public class PartsServiceImpl implements PartsService {
     /**
      * 根据订单id查找配件
      *
-     * @param orderId
+     * @param id
      * @return
      */
     @Override
-    public List<Parts> findAllOrderWithParts(Integer orderId) {
-        return partsMapper.findOrderAndPartsById(orderId);
+    public List<Parts> findAllOrderWithParts(Integer id) {
+        return partsMapper.findOrderAndPartsById(id);
+    }
+
+    /**
+     * 库存流水
+     *
+     * @param json
+     */
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void subInventory(String json) {
+        FixOrderPartsVo fixOrderPartsVo = new Gson().fromJson(json, FixOrderPartsVo.class);
+
+        for(FixOrderParts fixOrderParts : fixOrderPartsVo.getFixOrderPartsList()){
+            //更新库存
+            Parts parts = partsMapper.selectByPrimaryKey(fixOrderParts.getPartsId());
+            parts.setInventory(parts.getInventory() - fixOrderParts.getPartsNum());
+
+            partsMapper.updateByPrimaryKeySelective(parts);
+
+            //新增库存流水
+            PartsStream partsStream = new PartsStream();
+            partsStream.setPartsId(fixOrderParts.getPartsId());
+            partsStream.setNum(fixOrderParts.getPartsNum());
+            partsStream.setEmployeeId(fixOrderPartsVo.getEmployeeId());
+            partsStream.setOrderId(fixOrderParts.getOrderId());
+            partsStream.setType(PartsStream.PARTS_STREAM_TYPE_OUT);
+
+            partsStreamMapper.insertSelective(partsStream);
+            logger.info("库存流水:{}",partsStream);
+        }
+
     }
 
 

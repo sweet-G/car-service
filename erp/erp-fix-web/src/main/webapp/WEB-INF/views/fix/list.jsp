@@ -32,26 +32,29 @@
             <!-- Default box -->
             <div class="box">
                 <div class="box-body">
-                    <form class="form-inline" style="margin-bottom: 20px">
-                        <input type="text" name="orderId" placeholder="订单号" value="${param.orderId}"class="form-control">
-                        <%-- <input type="hidden" name="startTime" id="startTime"value="${param.startTime}">
-                        <input type="hidden" name="endTime" id="endTime"value="${param.endTime}">
-                        <input type="text" class="form-control" id="time" placeholder="下单日期选择">--%>
-                        <button class="btn btn-default">搜索</button>
-                    </form>
+                    <c:if test="${empty fixOrderList}">
+                        <h4>暂无任务</h4>
+                    </c:if>
 
-                    <div class="panel panel-info">
-                        <!-- Default panel contents -->
-                        <c:forEach items="${page.list}" var="order">
-                            <div class="panel-heading">订单号：${order.id} - ${order.car.carType} - ${order.serviceTypeId} <button class="btn btn-success btn-sm pull-right">任务领取</button> </div>
-                            <c:forEach items="${partsList}" var="parts">
-                                <ul class="list-group">
-                                    <li class="list-group-item">${parts.partsName} * ${parts.num}</li>
-                                </ul>
-                            </c:forEach>
-                        </c:forEach>
-                        <!-- List group -->
-                    </div>
+
+                    <c:forEach items="${fixOrderList}" var="fixOrder">
+                        <div class="panel panel-info">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                <a href="/fix/${fixOrder.orderId}/detail">订单号：${fixOrder.orderId}</a> - ${fixOrder.carType} - ${fixOrder.orderType}
+                                <c:if test="${fixOrder.state == '2'}">
+                                    <button rel="${fixOrder.orderId}" class="btn btn-success btn-sm pull-right receiveBtn">任务领取</button>
+                                </c:if>
+
+                            </div>
+                            <!-- List group -->
+                            <ul class="list-group">
+                                <c:forEach items="${fixOrder.partsList}" var="parts">
+                                    <li class="list-group-item">${parts.partsName} * ${parts.partsNum}</li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </c:forEach>
                     <ul id="pagination" class="pagination pull-right"></ul>
                 </div>
             </div>
@@ -66,6 +69,25 @@
 <%@ include file="../include/js.jsp" %>
 <script>
     $(function(){
+
+        $(".receiveBtn").click(function() {
+            var orderId = $(this).attr("rel");
+            layer.confirm("确定接收该任务么？", function(){
+                // 改成ajax方式：error：当前员工已有正在进行的维修任务
+                $.get("/fix/" + orderId + "/receive").done(function (res) {
+                    if(res.state = "success"){
+                        layer.msg("任务领取成功",{time:2000,icon:1},function () {
+                            window.location.href = "/fix/" + orderId + "/detail";
+                        });
+                    }else{
+                        layer.msg(res.message);
+                    }
+                }).error(function () {
+                    layer.msg("系统异常")
+                })
+            })
+        })
+
         $("#pagination").twbsPagination({
             totalPages : ${page.pages},
             visiblePages : 7,
@@ -73,7 +95,7 @@
             last:'末页',
             prev:'上一页',
             next:'下一页',
-            href:"/fix/list?p={{number}}&orderId=${param.orderId}"
+            href:"/fix/list?p={{number}}"
         });
 
         var locale = {

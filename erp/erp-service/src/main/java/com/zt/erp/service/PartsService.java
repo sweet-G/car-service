@@ -89,5 +89,11 @@ public interface PartsService {
      * @param orderId
      * @return
      */
-    List<Parts> findAllOrderWithParts(Integer orderId);
+    List<Parts> findAllOrderWithParts(Integer id);
+
+    /**
+     * 库存流水
+     * @param json
+     */
+    void subInventory(String json);
 }

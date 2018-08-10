@@ -2,6 +2,9 @@ package com.zt.erp.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
+import com.zt.erp.dto.OrderInfoDto;
+import com.zt.erp.dto.OrderStateDto;
 import com.zt.erp.entity.*;
 import com.zt.erp.exception.ServiceException;
 import com.zt.erp.mapper.*;
@@ -15,9 +18,13 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +53,8 @@ public class OrderServiceImpl implements OrderService {
     private CustomerMapper customerMapper;
     @Autowired
     private PartsMapper partsMapper;
+    @Autowired
+    JmsTemplate jmsTemplate;
 
 
     /**
@@ -197,6 +206,7 @@ public class OrderServiceImpl implements OrderService {
      * @param id
      */
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public void findOrderWithTransById(Integer id) throws ServiceException{
         Order order = orderMapper.selectByPrimaryKey(id);
         if(order == null) {
@@ -206,11 +216,41 @@ public class OrderServiceImpl implements OrderService {
         if(!order.getState().equals(Order.ORDER_STATE_NEW)){
             throw new ServiceException(("该订单已经生成并下发，操作失败"));
         }
-
+        //设置订单下发状态
         order.setState(Order.ORDER_STATE_TRANS);
         orderMapper.updateByPrimaryKeySelective(order);
+
+        //将订单放到消息队列中
+        sendOrderInfoMq(id);
     }
 
+    /**
+     * 订单下发放到消息队列中
+     * @param id
+     */
+    private void sendOrderInfoMq(Integer id) {
+        //获得订单信息
+        Order order = orderMapper.findCarAndCustomerById(id);
+        //获得项目类型信息
+        ServiceType serviceType = serviceTypeMapper.selectByPrimaryKey(order.getServiceTypeId());
+        //获得订单配件信息
+        List<Parts> partsList = partsMapper.findOrderAndPartsById(id);
+
+        OrderInfoDto orderInfoDto = new OrderInfoDto();
+        orderInfoDto.setOrder(order);
+        orderInfoDto.setServiceType(serviceType);
+        orderInfoDto.setPartsList(partsList);
+
+        //专程json发送到消息队列中
+        String json = new Gson().toJson(orderInfoDto);
+        jmsTemplate.send(new MessageCreator() {
+            @Override
+            public Message createMessage(javax.jms.Session session) throws JMSException {
+                return session.createTextMessage(json);
+            }
+        });
+
+    }
     /**
      * 修改订单
      *
@@ -248,6 +288,48 @@ public class OrderServiceImpl implements OrderService {
 
         logger.info("更新订单{}", order.getId());
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public List<Order> findAllOrder() {
+        OrderExample orderExample = new OrderExample();
+        return orderMapper.selectByExample(orderExample);
+    }
+
+    /**
+     * 根据消息队列json修改order状态
+     *
+     * @param json
+     */
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void editOrderState(String json) {
+
+        OrderStateDto orderStateDto = new Gson().fromJson(json, OrderStateDto.class);
+        Order order = orderMapper.selectByPrimaryKey(orderStateDto.getOrderId());
+
+        if(order == null){
+            logger.error("{} 订单不存在", orderStateDto.getOrderId());
+        }
+
+        //更改基础表的状态
+        order.setState(orderStateDto.getState());
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        //新增订单与员工
+        // 如果员工的employeeId==null 则代表员工订单关联关系不需要新增
+        if (orderStateDto.getEmployeeId() != null) {
+            OrderEmployee orderEmployee = new OrderEmployee();
+            orderEmployee.setEmployeeId(orderStateDto.getEmployeeId());
+            orderEmployee.setOrderId(order.getId());
+
+            orderEmployeeMapper.insertSelective(orderEmployee);
+        }
+
+    }
+
 
     /**
      * 新增订单配件关联表
