@@ -293,7 +293,20 @@
         INNER JOIN fix_order_parts fop ON fo.order_id = fop.order_id
         where fo.order_id = #{id}
     </select>
-    <update id="updateByExampleSelective" parameterType="map">
+  <select id="findCheckOrderWithParts" resultMap="resultMapWithParts">
+SELECT
+            fo.*, fop.id,
+            fop.parts_id,
+            fop.parts_no,
+            fop.parts_name,
+            fop.parts_num
+        FROM
+            fix_order fo
+        INNER JOIN fix_order_parts fop ON fo.order_id = fop.order_id
+        WHERE fo.state = 4 or fo.state = 5
+        order by fo.state,order_time
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
     update fix_order
     <set>
       <if test="record.orderId != null">

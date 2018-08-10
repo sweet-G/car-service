@@ -37,7 +37,7 @@ public interface FixOrderService {
     List<FixOrder> findFixOrderListWithParts();
 
     /**
-     * 根据订单id和当前登录员工领取任务
+     * 根据订单id和当前登录员工领取维修任务
      * @param id
      * @param employee
      * @throws ServiceException
@@ -56,4 +56,30 @@ public interface FixOrderService {
      * @param id
      */
     void taskDone(Integer id);
+
+    /**
+     * 查询质检单
+     * @return
+     */
+    List<FixOrder> findCheckOrderListWithParts();
+
+    /**
+     *根据订单id和当前登录员工领取质检任务
+     * @param id
+     * @param employee
+     */
+    void checkReceiveTask(Integer id, Employee employee);
+
+    /**
+     * 根据id查询质检订单
+     * @param id
+     * @return
+     */
+    FixOrder findCheckOrderById(Integer id);
+
+    /**
+     * 完成质检任务
+     * @param id
+     */
+    void CheckTaskDone(Integer id);
 }

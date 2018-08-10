@@ -73,7 +73,7 @@ public class LoginController {
         try {
             subject.login(usernamePasswordToken);
 
-            if(subject.hasRole("fix:service")) {
+            if(subject.hasRole("fix:service") || subject.hasRole("check:service")) {
 
                 Employee employee = roleEmployeeService.findEmployeeByTel(employeeTel);
                 Session session = subject.getSession();

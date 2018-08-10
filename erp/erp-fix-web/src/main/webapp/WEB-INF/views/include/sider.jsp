@@ -34,6 +34,18 @@
                     <li><a href="/fix/list"><i class="fa fa-circle-o"></i>维修任务领取</a></li>
                 </ul>
             </li>
+            <!-- 质检服务 -->
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-wrench"></i> <span>质检服务</span>
+                    <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/check/list"><i class="fa fa-circle-o"></i>质检任务领取</a></li>
+                </ul>
+            </li>
             <!-- 库存管理 -->
             <li class="treeview">
                 <a href="#">

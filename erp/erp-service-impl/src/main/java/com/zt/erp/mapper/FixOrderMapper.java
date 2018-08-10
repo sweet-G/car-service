@@ -35,4 +35,6 @@ public interface FixOrderMapper {
     List<FixOrder> findListParts();
 
     FixOrder findfixOrderPartsById(Integer id);
+
+    List<FixOrder> findCheckOrderWithParts();
 }

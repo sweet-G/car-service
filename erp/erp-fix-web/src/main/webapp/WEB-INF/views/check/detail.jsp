@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>车管家ERP-维修保养服务单</title>
+    <title>车管家ERP-质检服务单</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <%@ include file="../include/css.jsp"%>
@@ -34,7 +34,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                项目维修
+                项目质检
             </h1>
         </section>
 
@@ -44,7 +44,7 @@
             <!-- Default box -->
             <div class="box">
                 <div class="box-body no-padding">
-                    <a href="/fix/list" class="btn btn-primary btn-sm" style="margin-left: 1150px;margin-bottom: 20px"><i class="fa fa-arrow-left"></i> 返回列表</a>
+                    <a href="/check/list" class="btn btn-primary btn-sm" style="margin-left: 1150px;margin-bottom: 20px"><i class="fa fa-arrow-left"></i> 返回列表</a>
                     <table class="table">
                         <tbody>
                         <tr>
@@ -58,7 +58,7 @@
                             <td class="td_title">时间</td><td><fmt:formatDate value="${fixOrder.orderTime}" pattern="yyyy-MM-dd"/></td>
                         </tr>
                         <tr>
-                            <td class="td_title">维修员</td><td>${fixOrder.fixEmployeeName}</td>
+                            <td class="td_title">维修员</td><td>${fixOrder.fixEmployeeName}</td><td class="td_title">质检员</td><td>${fixOrder.checkEmployeeName}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -92,7 +92,7 @@
                     </tbody>
                 </table>
             </div>
-            <c:if test="${employeeId == fixOrder.fixEmployeeId}">
+            <c:if test="${employeeId == fixOrder.checkEmployeeId}">
                 <button class="btn btn-success btn-block btn-lg" id="doneBtn">完成</button>
             </c:if>
 
@@ -112,8 +112,8 @@
 <script>
     $(function(){
         $("#doneBtn").click(function(){
-            layer.confirm("确定已完成所有维修工作？", function(){
-                window.location.href = "/fix/${fixOrder.orderId}/done";
+            layer.confirm("确定已完成所有质检工作？", function(){
+                window.location.href = "/check/${fixOrder.orderId}/done";
             });
         })
     })
