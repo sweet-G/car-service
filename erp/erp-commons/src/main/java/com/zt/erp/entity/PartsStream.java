@@ -2,6 +2,7 @@ package com.zt.erp.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 
@@ -41,6 +42,9 @@ public class PartsStream implements Serializable {
      * 创建时间
      */
     private Date createTime;
+
+    private Parts parts;
+    private Employee employee;
 
     private static final long serialVersionUID = 1L;
 
@@ -100,56 +104,34 @@ public class PartsStream implements Serializable {
         this.createTime = createTime;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        PartsStream other = (PartsStream) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getOrderId() == null ? other.getOrderId() == null : this.getOrderId().equals(other.getOrderId()))
-            && (this.getPartsId() == null ? other.getPartsId() == null : this.getPartsId().equals(other.getPartsId()))
-            && (this.getNum() == null ? other.getNum() == null : this.getNum().equals(other.getNum()))
-            && (this.getEmployeeId() == null ? other.getEmployeeId() == null : this.getEmployeeId().equals(other.getEmployeeId()))
-            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
+    public Parts getParts() {
+        return parts;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getOrderId() == null) ? 0 : getOrderId().hashCode());
-        result = prime * result + ((getPartsId() == null) ? 0 : getPartsId().hashCode());
-        result = prime * result + ((getNum() == null) ? 0 : getNum().hashCode());
-        result = prime * result + ((getEmployeeId() == null) ? 0 : getEmployeeId().hashCode());
-        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
-        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
-        return result;
+    public void setParts(Parts parts) {
+        this.parts = parts;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", orderId=").append(orderId);
-        sb.append(", partsId=").append(partsId);
-        sb.append(", num=").append(num);
-        sb.append(", employeeId=").append(employeeId);
-        sb.append(", type=").append(type);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "PartsStream{" +
+                "id=" + id +
+                ", orderId=" + orderId +
+                ", partsId=" + partsId +
+                ", num=" + num +
+                ", employeeId=" + employeeId +
+                ", type=" + type +
+                ", createTime=" + createTime +
+                ", parts=" + parts +
+                ", employee=" + employee +
+                '}';
     }
 }

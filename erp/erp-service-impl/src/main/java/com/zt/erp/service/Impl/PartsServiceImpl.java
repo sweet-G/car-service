@@ -205,5 +205,23 @@ public class PartsServiceImpl implements PartsService {
 
     }
 
+    /**
+     * 出库分页
+     *
+     * @param pageNo
+     * @param maps
+     * @return
+     */
+    @Override
+    public PageInfo<PartsStream> findPartsStreamMaps(Integer pageNo, Map<String, Object> maps) {
+        PageHelper.startPage(pageNo,Constant.PAGE_SIZE);
+
+        List<PartsStream> partsStreamList = partsStreamMapper.findPageByMap(maps);
+
+        PageInfo<PartsStream> pageInfo = new PageInfo<>(partsStreamList);
+        return pageInfo;
+    }
+
+
 
 }

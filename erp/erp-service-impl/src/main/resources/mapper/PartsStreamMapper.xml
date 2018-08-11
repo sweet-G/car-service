@@ -172,6 +172,42 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+    <select id="findPageByMap" resultMap="listParts">
+      SELECT
+      parts_stream.*, parts.parts_no,
+      parts.parts_name,
+      parts.inventory,
+      employee.employee_name
+      FROM
+      parts_stream
+      LEFT JOIN parts ON parts_stream.parts_id = parts.id
+      LEFT JOIN employee ON parts_stream.employee_id = employee.id
+      <where>
+        <if test="orderId != null and orderId != ''">
+          and parts_stream.order_id = #{orderId}
+        </if>
+      </where>
+    </select>
+  <resultMap id="listParts" type="com.zt.erp.entity.PartsStream" extends="BaseResultMap">
+    <association property="parts" javaType="com.zt.erp.entity.Parts">
+      <id property="id" column="parts_id"/>
+      <result column="parts_no"  property="partsNo" />
+      <result column="parts_name"  property="partsName" />
+      <result column="in_price"  property="inPrice" />
+      <result column="sale_price"  property="salePrice" />
+      <result column="inventory"  property="inventory" />
+      <result column="type_id"  property="typeId" />
+      <result column="address"  property="address" />
+    </association>
+    <association property="employee" javaType="com.zt.erp.entity.Employee">
+      <id property="id" column="employee_id"/>
+      <result column="employee_name"  property="employeeName" />
+      <result column="employee_tel"  property="employeeTel" />
+      <result column="password"  property="password" />
+      <result column="create_time"  property="createTime" />
+      <result column="state"  property="state" />
+    </association>
+  </resultMap>
   <update id="updateByExampleSelective" parameterType="map">
     update parts_stream
     <set>

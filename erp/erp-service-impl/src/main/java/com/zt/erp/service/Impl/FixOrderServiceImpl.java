@@ -247,7 +247,7 @@ public class FixOrderServiceImpl implements FixOrderService {
     public void checkReceiveTask(Integer id, Employee employee) {
         //判断当前员工是否有未完成的任务
         FixOrderExample fixOrderExample = new FixOrderExample();
-        fixOrderExample.createCriteria().andFixEmployeeIdEqualTo(employee.getId()).andStateEqualTo(FixOrder.ORDER_STATE_CHECKING);
+        fixOrderExample.createCriteria().andCheckEmployeeIdEqualTo(employee.getId()).andStateEqualTo(FixOrder.ORDER_STATE_CHECKING);
         List<FixOrder> fixOrderList = fixOrderMapper.selectByExample(fixOrderExample);
 
         if(fixOrderList != null && fixOrderList.size() > 0) {

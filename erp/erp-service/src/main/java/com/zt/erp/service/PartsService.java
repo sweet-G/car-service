@@ -2,6 +2,7 @@ package com.zt.erp.service;
 
 import com.github.pagehelper.PageInfo;
 import com.zt.erp.entity.Parts;
+import com.zt.erp.entity.PartsStream;
 import com.zt.erp.entity.Type;
 import com.zt.erp.exception.ServiceException;
 import org.springframework.stereotype.Service;
@@ -86,7 +87,7 @@ public interface PartsService {
 
     /**
      * 根据订单id查找配件
-     * @param orderId
+     * @param id
      * @return
      */
     List<Parts> findAllOrderWithParts(Integer id);
@@ -96,4 +97,13 @@ public interface PartsService {
      * @param json
      */
     void subInventory(String json);
+
+    /**
+     * 出库分页
+     * @param pageNo
+     * @param maps
+     * @return
+     */
+    PageInfo<PartsStream> findPartsStreamMaps(Integer pageNo, Map<String,Object> maps);
+
 }

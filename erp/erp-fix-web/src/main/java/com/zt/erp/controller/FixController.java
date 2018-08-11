@@ -4,9 +4,10 @@ import com.github.pagehelper.PageInfo;
 import com.zt.erp.dto.ResponseBean;
 import com.zt.erp.entity.Employee;
 import com.zt.erp.entity.FixOrder;
-import com.zt.erp.entity.FixOrderParts;
+import com.zt.erp.entity.Role;
 import com.zt.erp.exception.ServiceException;
 import com.zt.erp.service.FixOrderService;
+import com.zt.erp.service.RoleEmployeeService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,22 +29,24 @@ public class FixController {
 
     @Autowired
     private FixOrderService fixOrderService;
+    @Autowired
+    private RoleEmployeeService roleEmployeeService;
 
     @GetMapping("/list")
-    public String list(@RequestParam(name = "p",defaultValue = "1",required = false) Integer pageNo,
-                       @RequestParam(required = false) Integer orderId,
+    public String list(Model model){
+        Subject subject = SecurityUtils.getSubject();
+        Employee employee = (Employee) subject.getPrincipal();
 
-                       Model model){
-        Map<String, Object> maps = new HashMap<>();
-        maps.put("pageNo",pageNo);
-        maps.put("orderId",orderId);
-
-        PageInfo<FixOrder> page = fixOrderService.findPageByMap(pageNo,maps);
+        List<Role> roleList = roleEmployeeService.findRoleListByEmployeeId(employee.getId());
+        for(Role role : roleList){
+            if(!role.getRoleCode().equals("fix:service")){
+                return "error/401";
+            }
+        }
 
         List<FixOrder> fixOrderList = fixOrderService.findFixOrderListWithParts();
 
         model.addAttribute("fixOrderList",fixOrderList);
-        model.addAttribute("page",page);
         return "fix/list";
     }
 

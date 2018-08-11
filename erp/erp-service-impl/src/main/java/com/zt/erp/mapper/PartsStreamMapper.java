@@ -3,6 +3,8 @@ package com.zt.erp.mapper;
 import com.zt.erp.entity.PartsStream;
 import com.zt.erp.entity.PartsStreamExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface PartsStreamMapper {
@@ -27,4 +29,7 @@ public interface PartsStreamMapper {
     int updateByPrimaryKeySelective(PartsStream record);
 
     int updateByPrimaryKey(PartsStream record);
+
+    List<PartsStream> findPageByMap(Map<String,Object> maps);
+
 }
