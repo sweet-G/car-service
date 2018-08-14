@@ -25,7 +25,7 @@ import java.util.Map;
  * @author zhangtian
  * @date 2018/7/27
  */
-@Service
+
 public class RolePermissionServiceImpl implements RolePermissionService {
 
     Logger logger = LoggerFactory.getLogger(RolePermissionServiceImpl.class);

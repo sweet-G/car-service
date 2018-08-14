@@ -27,7 +27,7 @@ import java.util.Map;
  * @author zhangtian
  * @date 2018/7/28
  */
-@Service
+
 public class RoleEmployeeServiceImpl implements RoleEmployeeService {
 
     Logger logger = LoggerFactory.getLogger(RoleEmployeeServiceImpl.class);
@@ -98,7 +98,7 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
         List<Employee> employeeList = employeeMapper.findPageWithRoleMaps(maps);
 
         //遍历所有员工，并去除当前员工
-        Subject subject = SecurityUtils.getSubject();
+        /*Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Employee employee = (Employee) session.getAttribute("employee");
 
@@ -108,7 +108,7 @@ public class RoleEmployeeServiceImpl implements RoleEmployeeService {
             if(em.getEmployeeName().equals(employee.getEmployeeName())){
                 employeeIterable.remove();
             }
-        }
+        }*/
 
         PageInfo<Employee> pageInfo = new PageInfo<>(employeeList);
 

@@ -32,9 +32,6 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private PartsService partsService;
-    @Autowired
-    private CarService carService;
-
 
     @GetMapping("/new")
     public String newOrder() {

@@ -31,7 +31,6 @@ import java.util.Map;
  * @author zhangtian
  * @date 2018/8/9
  */
-@Service
 public class FixOrderServiceImpl implements FixOrderService {
 
     private Logger logger = LoggerFactory.getLogger(FixOrderServiceImpl.class);

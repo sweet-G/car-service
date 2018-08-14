@@ -1,4 +1,4 @@
-package com.zt.erp.controller;
+package com.zt.erp.controller.exceptionController;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -32,8 +32,6 @@ import java.util.List;
 public class LoginController {
 
     @Autowired
-    private LoginService loginService;
-    @Autowired
     private RoleEmployeeService roleEmployeeService;
 
     @GetMapping("/home")

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author zhangtian
  * @date 2018/7/25
  */
-@Service
+
 public class TypeServiceImpl implements TypeService {
 
     @Autowired

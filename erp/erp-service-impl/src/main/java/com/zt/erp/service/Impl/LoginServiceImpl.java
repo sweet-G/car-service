@@ -20,7 +20,6 @@ import java.util.List;
  * @author zhangtian
  * @date 2018/7/26
  */
-@Service
 public class LoginServiceImpl implements LoginService {
 
     Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);

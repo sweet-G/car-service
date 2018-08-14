@@ -24,7 +24,7 @@ import java.util.Map;
  * @author zhangtian
  * @date 2018/7/23
  */
-@Service
+
 public class PartsServiceImpl implements PartsService {
 
     private Logger logger = LoggerFactory.getLogger(PartsServiceImpl.class);
