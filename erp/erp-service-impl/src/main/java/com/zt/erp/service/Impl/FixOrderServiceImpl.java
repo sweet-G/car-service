@@ -9,6 +9,8 @@ import com.zt.erp.entity.*;
 import com.zt.erp.exception.ServiceException;
 import com.zt.erp.mapper.FixOrderMapper;
 import com.zt.erp.mapper.FixOrderPartsMapper;
+import com.zt.erp.mapper.SttleOrderMapper;
+import com.zt.erp.mapper.SttleOrderPartsMapper;
 import com.zt.erp.service.FixOrderService;
 import com.zt.erp.util.Constant;
 import com.zt.erp.vo.FixOrderPartsVo;
@@ -38,6 +40,10 @@ public class FixOrderServiceImpl implements FixOrderService {
     private FixOrderMapper fixOrderMapper;
     @Autowired
     private FixOrderPartsMapper fixOrderPartsMapper;
+    @Autowired
+    private SttleOrderMapper sttleOrderMapper;
+    @Autowired
+    private SttleOrderPartsMapper sttleOrderPartsMapper;
     @Autowired
     JmsTemplate jmsTemplate;
 
@@ -70,6 +76,26 @@ public class FixOrderServiceImpl implements FixOrderService {
         fixOrderMapper.insert(fixOrder);
         logger.info("新增fixOrder：{}",fixOrder);
 
+        //结算
+        SttleOrder sttleOrder = new SttleOrder();
+        sttleOrder.setOrderId(orderInfoDto.getOrder().getId());
+        sttleOrder.setOrderType(orderInfoDto.getServiceType().getServiceName());
+        sttleOrder.setOrderTime(orderInfoDto.getOrder().getCreateTime());
+        sttleOrder.setState(orderInfoDto.getOrder().getState());
+        sttleOrder.setOrderMoney(orderInfoDto.getOrder().getFee());
+        sttleOrder.setOrderServiceHour(orderInfoDto.getServiceType().getServiceHour());
+        sttleOrder.setOrderServiceHourFee(new BigDecimal(Integer.parseInt(orderInfoDto.getServiceType().getServiceHour()) * Constant.HOUR_FEE));
+        sttleOrder.setOrderPartsFee(fixOrder.getOrderMoney().subtract(fixOrder.getOrderServiceHourFee()));
+        sttleOrder.setCarType(orderInfoDto.getOrder().getCar().getCarType());
+        sttleOrder.setCarColor(orderInfoDto.getOrder().getCar().getColor());
+        sttleOrder.setCarLicence(orderInfoDto.getOrder().getCar().getLicenceNo());
+        sttleOrder.setCustomerName(orderInfoDto.getOrder().getCustomer().getUserName());
+        sttleOrder.setCustomerTel(orderInfoDto.getOrder().getCustomer().getTel());
+
+        sttleOrderMapper.insertSelective(sttleOrder);
+        logger.info("新增sttleOrder：{}",sttleOrder);
+
+
         for(Parts parts : orderInfoDto.getPartsList()){
             FixOrderParts fixOrderParts = new FixOrderParts();
             fixOrderParts.setOrderId(orderInfoDto.getOrder().getId());
@@ -80,6 +106,16 @@ public class FixOrderServiceImpl implements FixOrderService {
 
             fixOrderPartsMapper.insertSelective(fixOrderParts);
             logger.info("新增fixOrderParts：{}",fixOrderParts);
+
+            SttleOrderParts sttleOrderParts = new SttleOrderParts();
+            sttleOrderParts.setOrderId(orderInfoDto.getOrder().getId());
+            sttleOrderParts.setPartsId(parts.getId());
+            sttleOrderParts.setPartsName(parts.getPartsName());
+            sttleOrderParts.setPartsNo(parts.getPartsNo());
+            sttleOrderParts.setPartsNum(parts.getNum());
+
+            sttleOrderPartsMapper.insertSelective(sttleOrderParts);
+            logger.info("新增sttleOrderParts：{}",sttleOrderParts);
         }
 
     }

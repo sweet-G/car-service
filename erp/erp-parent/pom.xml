@@ -16,6 +16,7 @@
         <module>../erp-fix-web</module>
         <module>../erp-settle-web</module>
         <module>../erp-parts-web</module>
+        <module>../erp-sttle-web</module>
     </modules>
 
     <packaging>pom</packaging>

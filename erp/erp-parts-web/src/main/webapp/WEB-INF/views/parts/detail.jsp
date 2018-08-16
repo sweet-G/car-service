@@ -7,7 +7,7 @@
     <title>车管家ERP-配件详情</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/css.jsp" %>
+    <%@ include file="../include/css.jsp" %>
     <style>
         .td_title {
             font-weight: bold;
@@ -21,8 +21,8 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/header.jsp" %>
-    <jsp:include page="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/sider.jsp">
+    <%@ include file="../include/header.jsp" %>
+    <jsp:include page="../include/sider.jsp">
         <jsp:param name="menu" value="parts"/>
     </jsp:include>
 
@@ -54,10 +54,10 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/footer.jsp" %>
+    <%@ include file="../include/footer.jsp" %>
 </div>
 <!-- ./wrapper -->
-<%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/js.jsp" %>
+<%@ include file="../include/js.jsp" %>
 <script>
     $(function(){
     })

@@ -7,15 +7,15 @@
     <title>车管家ERP-订单列表</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/css.jsp" %>
+    <%@ include file="../include/css.jsp" %>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
 
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/header.jsp" %>
+    <%@ include file="../include/header.jsp" %>
 
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/sider.jsp" %>
+    <%@ include file="../include/sider.jsp" %>
 
     <!-- 右侧内容部分 -->
     <div class="content-wrapper">
@@ -79,10 +79,10 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/footer.jsp" %>
+    <%@ include file="../include/footer.jsp" %>
 
 </div>
-<%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/js.jsp" %>
+<%@ include file="../include/js.jsp" %>
 <script>
     $(function(){
         $("#pagination").twbsPagination({

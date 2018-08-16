@@ -31,17 +31,8 @@
         <property name="name" value="rememberMe"/>
     </bean>
 
-
-
     <!--配置生命周期管理器-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
-    <!--开启基于注解的shiro-->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-          depends-on="lifecycleBeanPostProcessor"/>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
 
     <bean id="filterChainDefinitionMap" class="com.zt.erp.shiro.CustomerFilterChainDefinition">
         <property name="shiroFilter" ref="shiroFilter"/>

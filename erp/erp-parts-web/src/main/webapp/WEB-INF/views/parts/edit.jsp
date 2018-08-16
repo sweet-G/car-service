@@ -8,14 +8,14 @@
     <title>车管家ERP-库存管理</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/css.jsp" %>
+    <%@ include file="../include/css.jsp" %>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
 
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/header.jsp" %>
-    <jsp:include page="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/sider.jsp">
+    <%@ include file="../include/header.jsp" %>
+    <jsp:include page="../include/sider.jsp">
         <jsp:param name="menu" value="parts"/>
     </jsp:include>
     <!-- =============================================== -->
@@ -81,11 +81,11 @@
     <!-- /.content-wrapper -->
 
     <!-- 底部 -->
-    <%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/footer.jsp" %>
+    <%@ include file="../include/footer.jsp" %>
 
 </div>
 
-<%@ include file="../../../../../../../erp-front-web/src/main/webapp/WEB-INF/views/include/js.jsp" %>
+<%@ include file="../include/js.jsp" %>
 <script>
 $(function () {$("#cancel").click(function () {
     window.location.href = "/parts";
