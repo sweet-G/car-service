@@ -5,9 +5,12 @@
 
     <dubbo:application name="ErpServiceProvider"/>
 
+    <dubbo:registry address="zookeeper://192.168.1.223:2181"/>
+<!--
     <dubbo:registry address="zookeeper://192.168.1.145:2181"/>
+-->
 
-    <dubbo:protocol host="192.168.1.144" port="20880"/>
+    <dubbo:protocol host="192.168.1.223" port="20880"/>
 
     <bean id="carService" class="com.zt.erp.service.Impl.CarServiceImpl"/>
     <bean id="fixOrderService" class="com.zt.erp.service.Impl.FixOrderServiceImpl"/>

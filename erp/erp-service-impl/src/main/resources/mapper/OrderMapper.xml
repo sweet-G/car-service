@@ -267,6 +267,15 @@
       </if>
       </where>
     </select>
+    <select id="findOrderCountDaily" resultType="com.zt.erp.entity.Order">
+      SELECT
+            *
+        FROM
+            `order`
+        WHERE
+            `order`.state = #{state}
+        AND date(`order`.create_time) = #{dateTime}
+    </select>
     <update id="updateByExampleSelective" parameterType="map">
     update `order`
     <set>

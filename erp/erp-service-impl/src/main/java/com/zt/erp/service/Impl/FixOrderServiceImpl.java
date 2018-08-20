@@ -7,18 +7,19 @@ import com.zt.erp.dto.OrderInfoDto;
 import com.zt.erp.dto.OrderStateDto;
 import com.zt.erp.entity.*;
 import com.zt.erp.exception.ServiceException;
-import com.zt.erp.mapper.FixOrderMapper;
-import com.zt.erp.mapper.FixOrderPartsMapper;
-import com.zt.erp.mapper.SttleOrderMapper;
-import com.zt.erp.mapper.SttleOrderPartsMapper;
+import com.zt.erp.mapper.*;
+import com.zt.erp.quartz.CountTimeOut;
 import com.zt.erp.service.FixOrderService;
 import com.zt.erp.util.Constant;
 import com.zt.erp.vo.FixOrderPartsVo;
+import org.joda.time.DateTime;
+import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,10 @@ public class FixOrderServiceImpl implements FixOrderService {
     private SttleOrderMapper sttleOrderMapper;
     @Autowired
     private SttleOrderPartsMapper sttleOrderPartsMapper;
+    @Autowired
+    private SchedulerFactoryBean schedulerFactoryBean;
+    @Autowired
+    private CountTimeoutMapper countTimeoutMapper;
     @Autowired
     JmsTemplate jmsTemplate;
 
@@ -187,6 +192,39 @@ public class FixOrderServiceImpl implements FixOrderService {
         //减少库存
         changePartsInventory(id,employee.getId());
 
+        //添加超时任务
+        sendFixOrderTimeoutTask(id,employee.getId(),Integer.parseInt(fixOrder.getOrderServiceHour()));
+    }
+
+    /**
+     * 添加超时任务
+     * @param orderId
+     * @param employeeId
+     * @param orderServiceHour
+     */
+    private void sendFixOrderTimeoutTask(Integer orderId, Integer employeeId, Integer orderServiceHour) {
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+
+        try {
+            JobDetail jobDetail = JobBuilder.newJob(CountTimeOut.class)
+                    .withIdentity("fix:" + orderId + "-" + employeeId,"ficOrder")
+                    .build();
+
+            DateTime dateTime = new DateTime();
+            //dateTime = dateTime.plusHours(orderServiceHour);
+            dateTime = dateTime.plusMinutes(orderServiceHour);
+
+            String cronExpression = dateTime.getSecondOfMinute()+ "" + dateTime.getMinuteOfHour()+ "" + dateTime.getHourOfDay()
+                                    + "" + dateTime.getDayOfMonth()+ "" +dateTime.getMonthOfYear() + "?" +dateTime.getYear();
+
+            CronScheduleBuilder  scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+            Trigger trigger = TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build();
+
+            scheduler.scheduleJob(jobDetail,trigger);
+            scheduler.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -259,6 +297,15 @@ public class FixOrderServiceImpl implements FixOrderService {
         orderStateDto.setState(FixOrder.ORDER_STATE_FIXED);
 
         sendStateToMq(orderStateDto);
+
+        //删除超时任务
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+        try {
+            scheduler.deleteJob(new JobKey("fix:" + fixOrder.getOrderId() + "-" + fixOrder.getFixEmployeeId(), "fixOrder"));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -342,5 +389,27 @@ public class FixOrderServiceImpl implements FixOrderService {
 
         sendStateToMq(orderStateDto);
     }
+
+    /**
+     * 添加超时任务
+     *
+     * @param jobName
+     */
+    @Override
+    public void addFixTimeOut(String jobName) {
+        Integer orderId = Integer.valueOf(jobName.split(":")[1].split("-")[0]);
+        Integer employeeId = Integer.valueOf(jobName.split(":")[1].split("-")[1]);
+
+        CountTimeoutExample countTimeoutExample = new CountTimeoutExample();
+        countTimeoutExample.createCriteria().andEmployeeIdEqualTo(employeeId)
+                .andOrderIdEqualTo(orderId);
+
+        CountTimeout countTimeout = new CountTimeout();
+        countTimeout.setOrderId(orderId);
+        countTimeout.setEmployeeId(employeeId);
+
+        countTimeoutMapper.insertSelective(countTimeout);
+    }
+
 
 }

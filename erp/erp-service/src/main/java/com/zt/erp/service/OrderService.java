@@ -93,4 +93,9 @@ public interface OrderService {
      * @param json
      */
     void editOrderState(String json);
+
+    /**
+     * 统计昨天所有的订单数量和金额
+     */
+    void orderCountDaily();
 }

@@ -82,4 +82,10 @@ public interface FixOrderService {
      * @param id
      */
     void CheckTaskDone(Integer id);
+
+    /**
+     * 添加超时任务
+     * @param jobName
+     */
+    void addFixTimeOut(String jobName);
 }

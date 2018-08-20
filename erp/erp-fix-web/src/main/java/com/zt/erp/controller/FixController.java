@@ -1,6 +1,5 @@
 package com.zt.erp.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.zt.erp.dto.ResponseBean;
 import com.zt.erp.entity.Employee;
 import com.zt.erp.entity.FixOrder;
@@ -14,11 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 /**
  * @author zhangtian
  * @date 2018/8/7

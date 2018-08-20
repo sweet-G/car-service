@@ -9,6 +9,8 @@ import com.zt.erp.entity.Parts;
 import com.zt.erp.entity.ServiceType;
 import org.apache.ibatis.annotations.Param;
 
+import javax.annotation.PostConstruct;
+
 public interface OrderMapper {
     long countByExample(OrderExample example);
 
@@ -41,4 +43,6 @@ public interface OrderMapper {
     ServiceType findOrderAndServiceTypeById(Integer id);
 
     List<Order> findFixWithPage(Map<String,Object> maps);
+
+    List<Order> findOrderCountDaily(@Param("state") String state, @Param("dateTime") String dateTime);
 }

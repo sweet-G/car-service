@@ -21,13 +21,13 @@
 
     <!-- 创建scheduler -->
     <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <!-- 数据源 -->
-        <property name="dataSource" ref="dataSource"/>
-        <!-- 事务管理器 -->
-        <property name="transactionManager" ref="transactionManager"/>
-        <!-- 读取配置文件 -->
+        <!-- 数据源 --><!-- 读取配置文件 -->
         <property name="configLocation" value="classpath:quartz.properties"/>
         <!-- 是否覆盖已有的job -->
         <property name="overwriteExistingJobs" value="true"/>
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 事务管理器 -->
+        <property name="transactionManager" ref="transactionManager"/>
+
     </bean>
 </beans>

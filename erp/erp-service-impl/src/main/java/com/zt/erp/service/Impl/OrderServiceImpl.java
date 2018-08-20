@@ -15,6 +15,9 @@ import com.zt.erp.vo.PartsVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +56,8 @@ public class OrderServiceImpl implements OrderService {
     private CustomerMapper customerMapper;
     @Autowired
     private PartsMapper partsMapper;
+    @Autowired
+    private CountDaliyMapper countDaliyMapper;
     @Autowired
     JmsTemplate jmsTemplate;
 
@@ -327,6 +333,46 @@ public class OrderServiceImpl implements OrderService {
             orderEmployeeMapper.insertSelective(orderEmployee);
         }
 
+    }
+
+    /**
+     * 统计昨天所有的订单数量和金额
+     */
+    @Override
+    public void orderCountDaily() {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
+        //获取昨天所有订单的日期
+        DateTime dt = new DateTime();
+        dt = dt.minusDays(1);
+        //格式化日期
+        String dateTime = fmt.print(dt);
+
+        //获取昨天订单的数据
+        List<Order> orderList = orderMapper.findOrderCountDaily(Order.ORDER_STATE_DONE,dateTime);
+
+        if(orderList != null && orderList.size() > 0){
+            //汇总昨天所有的订单数据
+            CountDaliy countDaliy = new CountDaliy();
+            countDaliy.setDatatime(dateTime);
+            countDaliy.setSumNum(orderList.size());
+            //汇总昨天所有的订单总金额
+            BigDecimal bigDecimal = BigDecimal.ZERO;
+            for(Order order :orderList){
+                bigDecimal = bigDecimal.add(order.getFee());
+            }
+            countDaliy.setSumMoney(bigDecimal);
+
+            //添加数据库
+            countDaliyMapper.insertSelective(countDaliy);
+        }else{
+            CountDaliy countDaliy = new CountDaliy();
+            countDaliy.setDatatime(dateTime);
+
+            //添加数据库
+            countDaliyMapper.insertSelective(countDaliy);
+        }
+
+        logger.info("统计{}昨天订单数据",dateTime);
     }
 
 
