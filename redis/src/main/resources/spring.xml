@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!--无资源时等待时长-->
+        <property name="maxWaitMillis" value="5000"/>
+        <!--最大空闲连接数-->
+        <property name="maxIdle" value="10"/>
+        <!--最小空闲连接数-->
+        <property name="minIdle" value="5"/>
+        <!--最大连接数-->
+        <property name="maxTotal" value="20"/>
+    </bean>
+
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="host" value="192.168.1.143"/>
+        <constructor-arg name="port" value="6379"/>
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
+    </bean>
+
+</beans>
