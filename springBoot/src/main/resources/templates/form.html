@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="">
+            <label>账号</label>
+            <input type="text" class="form-control" th:value="${name}">
+            <br>
+            <label>权限</label>
+            <input type="checkbox" th:checked="${role == 'admin'}"> 管理员
+            <br>
+            <button class="btn btn-default" id="btn" th:attr="data-id=${role},data-role=${role}" th:xxx="${role}" type="button">submit</button>
+            <br>
+            <!-- /form/1000/edit -->
+            <a th:href="@{/form/{id}/edit(id=${id})}">修改</a>
+            <!-- /form?p=1 -->
+            <a th:href="@{/form(id=${id})}">下一页</a>
+            <h4 th:text="${param.p}"></h4>
+    </form>
+
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script>
+        $(function(){
+            $("#btn").click(function () {
+                var rel = $(this).attr("xxx");
+                alert("hello ->" + rel);
+            });
+        });
+    </script>
+</body>
+</html>

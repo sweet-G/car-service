@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h4 th:text="${name}"></h4>
+    <h4 th:if="${name == 'rose'}">Hello</h4>
+    <ul>
+        <li th:if="${#lists.isEmpty(list)}">暂无数据
+        </li>
+        <li th:each="name : ${list}" th:text="${name}"></li>
+    </ul>
+    <ul>
+        <li th:each="name,namecount : ${list}" th:text="${namecount.count + '->'+ name}"></li>
+    </ul>
+    <th:block th:if="${name == '果果'}">
+        <h4>你好</h4>
+    </th:block>
+</body>
+</html>
