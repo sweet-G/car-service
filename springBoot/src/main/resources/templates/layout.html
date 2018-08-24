@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">CRM</title>
+</head>
+<body>
+    <!--<div id="header" th:fragment="header(name)">
+        welcome  <span th:text="${name}"></span>
+    </div>
+    <div th:fragment="content"></div>
+    <div th:fragment="footer">
+        thanks
+    </div>-->
+
+    <div layout:fragment="header">
+        welcome
+    </div>
+    <div layout:fragment="content">
+
+    </div>
+    <div layout:fragment="footer">
+        thanks
+    </div>
+</body>
+</html>

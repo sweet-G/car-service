@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+<head>
+    <title>首页</title>
+</head>
+<body>
+
+    <!--<div layout:fragment="header"></div>-->
+
+   <!-- <div th:insert="~{layout::header}"></div>
+    <div th:replace="~{layout::header}"></div>
+    <div th:include="~{layout::header}"></div>
+
+    <div th:insert="layout::header(name=${name})"></div>
+
+    <h4>name : [[${name}]]</h4>
+    <h4>name : [(${name})]</h4>
+
+    <h4 th:inline="none">关闭内联: [[1, 2, 3], [4, 5]]</h4>
+
+    <h4 th:text="${#calendars.format(time,'yyyy-MM-dd')}"></h4>
+    <h4 th:text="${#numbers.formatInteger(money,0,'COMMA')}"></h4>
+    <script th:inline="javascript">
+        [# th:if="${name == rose}" ]
+        var name = [[${name}]]
+        var map = [[${map}]]
+        [/]
+    </script>-->
+</body>
+</html>
