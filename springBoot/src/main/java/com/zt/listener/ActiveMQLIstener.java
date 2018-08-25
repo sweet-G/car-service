@@ -1,15 +1,8 @@
 package com.zt.listener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
+
 import org.springframework.stereotype.Component;
 
-import javax.jms.ConnectionFactory;
 
 /**
  * @author zhangtian
@@ -18,7 +11,7 @@ import javax.jms.ConnectionFactory;
 @Component
 public class ActiveMQLIstener {
 
-    private Logger logger = LoggerFactory.getLogger(ActiveMQLIstener.class);
+    /*private Logger logger = LoggerFactory.getLogger(ActiveMQLIstener.class);
 
     @JmsListener(destination = "springboot-queue")
     public void queueMessage(String message){
@@ -29,7 +22,7 @@ public class ActiveMQLIstener {
             containerFactory = "topicListenerContainerFactory")
     public void getMessageFromTopic(String message) {
         logger.info("监听topic:{}",message);
-    }
+    }*/
 
 
 }

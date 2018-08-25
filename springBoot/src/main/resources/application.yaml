@@ -6,19 +6,24 @@ spring:
     url: jdbc:mysql:///demo
     username: root
     password: root
-#  redis:
-#    host: 192.168.1.143
-#    port: 6379
+#  cache:
+#    ehcache:
+#      config: classpath:ehcache.xml
+  redis:
+    host: 192.168.1.143
+    port: 6379
+    expires:
+      student: 10
   redission:
     host: redis://192.168.1.143:6379
     timeout: 5000
-  activemq:
-    broker-url: tcp://localhost:61616
-  jms:
-    listener:
-      acknowledge-mode: client
-      concurrency: 5
-      max-concurrency: 10
+#  activemq:
+#    broker-url: tcp://localhost:61616
+#  jms:
+#    listener:
+#      acknowledge-mode: client
+#      concurrency: 5
+#      max-concurrency: 10
 logging:
   level:
     com:

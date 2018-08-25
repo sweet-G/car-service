@@ -64,7 +64,7 @@
                 /static/** = anon
                 /logout = logout
                 #被认证和被记住的访问
-                /** = user
+                /** = user authc
             </value>
         </property>-->
     </bean>

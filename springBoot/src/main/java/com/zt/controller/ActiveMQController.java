@@ -1,17 +1,6 @@
 package com.zt.controller;
 
-import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.activemq.command.ActiveMQTopic;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
 
 /**
  * @author zhangtian
@@ -20,7 +9,7 @@ import javax.jms.Session;
 @Controller
 public class ActiveMQController {
 
-    @Autowired
+   /* @Autowired
     private JmsTemplate jmsTemplate;
 
     @GetMapping("/queue")
@@ -47,6 +36,6 @@ public class ActiveMQController {
                 return session.createTextMessage("hello");
             }
         });
-    }
+    }*/
 
 }

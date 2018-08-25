@@ -1,12 +1,7 @@
 package com.zt.listener;
 
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.jms.ConnectionFactory;
 
 /**
  * @author zhangtian
@@ -15,7 +10,7 @@ import javax.jms.ConnectionFactory;
 @Component
 public class TopicListener {
 
-    @Bean
+   /* @Bean
     public JmsListenerContainerFactory
     topicListenerContainerFactory(ConnectionFactory connectionFactory,
                                   DefaultJmsListenerContainerFactoryConfigurer configurer) {
@@ -24,5 +19,5 @@ public class TopicListener {
         //设置发布订阅模式
         factory.setPubSubDomain(true);
         return factory;
-    }
+    }*/
 }
