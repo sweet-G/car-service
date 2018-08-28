@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h4>{{totalCount}}</h4>
+        <super-button @super-click="counterIncerment" name="button-1"></super-button>
+        <super-button @super-click="counterIncerment" name="button-2"></super-button>
+        <super-button @super-click="counterIncerment" name="button-3"></super-button>
+
+        <my-content>你好</my-content>
+        <my-component></my-component>
+        <todo-item :link="myLink"></todo-item>
+        <button @click="changeLink">Click Me</button>
+    </div>
+
+    <script src="js/vue.js"></script>
+    <script>
+        Vue.component("super-button",{
+            template: '<button @click="counter">{{name}} -> {{count}}</button>',
+            props: ['name'],
+            data(){
+                return{
+                    count: 0
+                }
+            },
+            methods: {
+                counter(){
+                    this.count ++;
+                    this.$emit('super-click');
+                }
+            }
+        });
+
+        Vue.component("my-content",{
+            template: '<div><h3>Content</h3><slot>默认内容</slot></div>'
+        });
+
+        Vue.component("todo-item", {
+            template: '<a v-bind:href="link">{{title}} -> {{link}} -> {{toUppercaseLink}}</a>',
+            props: ['link'],
+            data(){
+                return{
+                    title: '百度'
+                };
+            },
+            computed: {
+                toUppercaseLink(){
+                    return this.link.toLowerCase();
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                myLink: "www.goole.com",
+                totalCount: 0
+            },
+            components: {
+                'my-component': {
+                    template: '<div>hello</div>'
+                }
+            },
+            methods: {
+                changeLink(){
+                    this.myLink = "www.SINA.com"
+                },
+                counterIncerment(){
+                    this.totalCount ++;
+                }
+
+            }
+        })
+    </script>
+</body>
+</html>

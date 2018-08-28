@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/home">home</router-link>
+        <router-link to="/news">news</router-link>
+        <router-link to="/user/1000">user:1000</router-link>
+        <router-link to="/money">money</router-link>
+        <button @click="toView('/news')">to News</button>
+        <hr>
+        <router-view></router-view>
+    </div>
+    <script type="text/x-template" id="moneyTemplate">
+        <div>
+            <h4>money</h4>
+            <router-link to="/money/cny">CNY</router-link>
+            <router-link to="/money/btc">BTC</router-link>
+            <router-view></router-view>
+        </div>
+    </script>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script>
+        var home = {
+            template: "<h4>Home</h4>"
+        };
+        var news = {
+            template: "<h4>News</h4>"
+        };
+        var user = {
+            template: "<h4>user: {{$route.params.id}}</h4>"
+        };
+        var money = {
+            template: "#moneyTemplate"
+        };
+        var moneyCny = {
+            template: '<h4>money-cny</h4>'
+        }
+        var moneyBtc = {
+            template: '<h4>money-btc</h4>'
+        }
+
+
+        var router = new VueRouter({
+            routes: [
+                {
+                    path: "/home",
+                    component: home
+                },
+                {
+                    path: "/news",
+                    component: news
+                },
+                {
+                    path: "/user/:id",
+                    component: user
+                },
+                {
+                    path: "/money",
+                    component: money,
+                    children: [
+                        {
+                            path: "cny",
+                            component: moneyCny
+                        },
+                        {
+                            path: "btc",
+                            component: moneyBtc
+                        }
+                    ]
+                }
+            ]
+        });
+        
+
+        new Vue({
+            el: '#app',
+            router:router,
+            methods: {
+                toView(viewName){
+                    this.$router.push(viewName);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

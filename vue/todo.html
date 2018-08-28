@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>todo</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        .done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    
+        <div id="app" class="container">
+                <input type="text" v-model="todo" v-on:keyup.enter="newTodo" class="form-control" placeholder="请输入todo">
+                <h3>未完成列表</h3>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="item in unDone">
+                        {{item.title}} -> {{item.done}}
+                        <a class="pull-right" v-on:click="changeTodoState(item,true)" href="javascript:;"><i class="fa fa-check"></i></a>
+                    </li>
+                </ul>
+                <h4>共{{todoList.length}}个待办事项，{{done.length}}个已完成</h4>
+                <h3>已完成列表</h3>
+                <ul class="list-group">
+                    <li class="list-group-item done" v-for="item in done">
+                         {{item.title}} -> {{item.done}}
+                        <a class="pull-right" v-on:click="changeTodoState(item,false)"href="javascript:;"><i class="fa fa-check"></i></a>
+                    </li>
+                </ul>
+            </div>
+    <script src="js/vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                todo: '',
+                todoList: [
+                    {title:"学习vue.js",done:false},
+                    {title:"学习nginx",done:false}
+                ]
+            },
+            methods: {
+                newTodo:function(){
+                    var todoItem = {title:this.todo,done:false};
+                    this.todoList.push(todoItem);
+                    this.todo = '';
+                },
+                changeTodoState(todoItem,state){
+                    todoItem.done=state;
+                }
+            },
+            computed: {
+                unDone(){
+                    return this.todoList.filter(function(item){
+                        return !item.done;
+                    })
+                },
+                done(){
+                    return this.todoList.filter(function(item){
+                        return item.done;
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>
