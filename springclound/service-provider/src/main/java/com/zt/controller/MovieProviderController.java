@@ -1,8 +1,7 @@
 package com.zt.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import com.zt.entity.Movie;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author zhangtian
@@ -16,4 +15,18 @@ public class MovieProviderController {
         System.out.println("id:-------->" + id);
         return "大话西游";
     }
+
+    @PostMapping("/movie/new")
+    public String newMovie(String movieName, String year) {
+        System.out.println("movieName: " + movieName);
+        System.out.println("year:" + year);
+        return "save success!";
+    }
+
+    @PostMapping("/movie/save")
+    public String saveMovie(@RequestBody Movie movie) {
+        System.out.println("movieName: " + movie.getMovieName());
+        return "save success!";
+    }
+
 }
