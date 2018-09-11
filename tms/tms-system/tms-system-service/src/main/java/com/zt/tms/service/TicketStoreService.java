@@ -45,4 +45,10 @@ public interface TicketStoreService {
      * @param ticketStore
      */
     void updateTicketStore(TicketStore ticketStore);
+
+    /**
+     * 修改售票点关联账户的状态
+     * @param id
+     */
+    void editState(Integer id);
 }

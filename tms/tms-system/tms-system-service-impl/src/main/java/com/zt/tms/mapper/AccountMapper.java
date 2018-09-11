@@ -32,5 +32,5 @@ public interface AccountMapper {
 
     int updateByPrimaryKey(Account record);
 
-    Object findAllWithRolesByQueryParam(Map<String,Object> requestParam);
+    List<Account> findAllWithRolesByQueryParam(Map<String,Object> requestParam);
 }

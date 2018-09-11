@@ -40,7 +40,8 @@ public class AccountController {
         requestParam.put("nameMobile", nameMobile);
         requestParam.put("rolesId", rolesId);
 
-        model.addAttribute("accountList", accountService.findAllAccountWithRolesByQueryParam(requestParam));
+        List<Account> accountList = accountService.findAllAccountWithRolesByQueryParam(requestParam);
+        model.addAttribute("accountList", accountList);
         model.addAttribute("rolesList", rolePermissionService.findAllRoles());
         return "manage/account/home";
     }

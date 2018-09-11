@@ -11,6 +11,8 @@ import com.zt.tms.mapper.TicketStoreMapper;
 import com.zt.tms.service.TicketStoreService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,8 @@ import java.util.Map;
  */
 @Service(version = "1.0",timeout = 5000)
 public class TicketStoreServiceImpl implements TicketStoreService {
+
+    private Logger logger = LoggerFactory.getLogger(TicketStoreServiceImpl.class);
 
     @Autowired
     private TicketStoreMapper ticketStoreMapper;
@@ -51,6 +55,8 @@ public class TicketStoreServiceImpl implements TicketStoreService {
         storeAccount.setStoreState(StoreAccount.ACCOUNT_STATE_NORMAL);
 
         storeAccountMapper.insertSelective(storeAccount);
+
+        logger.info("新增售票信息:{}" + ticketStore);
     }
 
     /**
@@ -129,5 +135,23 @@ public class TicketStoreServiceImpl implements TicketStoreService {
         }
 
         ticketStoreMapper.updateByPrimaryKeySelective(ticketStore);
+
+        logger.info("修改售票点信息:{}" + ticketStore);
+    }
+
+    /**
+     * 修改售票点关联账户的状态
+     *
+     * @param id
+     */
+    @Override
+    public void editState(Integer id) {
+        StoreAccount storeAccount = storeAccountMapper.selectByPrimaryKey(id);
+        if(storeAccount != null){
+            storeAccount.setStoreState(StoreAccount.ACCOUNT_STATE_DISABLE);
+            storeAccountMapper.updateByPrimaryKeySelective(storeAccount);
+            logger.info("修改售票票点账户状态:{}" + storeAccount);
+        }
+
     }
 }

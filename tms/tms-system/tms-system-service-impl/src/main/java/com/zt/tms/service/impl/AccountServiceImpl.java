@@ -66,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public Object findAllAccountWithRolesByQueryParam(Map<String, Object> requestParam) {
+    public List<Account> findAllAccountWithRolesByQueryParam(Map<String, Object> requestParam) {
         return accountMapper.findAllWithRolesByQueryParam(requestParam);
     }
 

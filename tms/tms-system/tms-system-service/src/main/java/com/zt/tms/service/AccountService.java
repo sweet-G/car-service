@@ -3,6 +3,7 @@ package com.zt.tms.service;
 import com.zt.tms.entity.Account;
 import com.zt.tms.entity.AccountLoginLog;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +29,6 @@ public interface AccountService {
      * @param requestParam
      * @return
      */
-    Object findAllAccountWithRolesByQueryParam(Map<String,Object> requestParam);
 
     /**
      * 新增账户
@@ -50,4 +50,6 @@ public interface AccountService {
      * @return
      */
     Account findById(Integer id);
+
+     List<Account> findAllAccountWithRolesByQueryParam(Map<String,Object> requestParam);
 }

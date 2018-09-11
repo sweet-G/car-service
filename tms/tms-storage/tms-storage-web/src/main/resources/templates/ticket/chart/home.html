@@ -1,0 +1,72 @@
+<html  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/plugins/twbsPagination/jquery.twbsPagination.min.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <!-- 右侧内容部分 -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">年票统计</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="description-block border-right">
+                                <h5 class="description-header" th:text = "${resultMap.total}"></h5>
+                                <span class="description-text">总数量</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="description-block border-right">
+                                <h5 class="description-header" th:text = "${resultMap.in_num}"></h5>
+                                <span class="description-text">已入库</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="description-block border-right">
+                                <h5 class="description-header" th:text = "${resultMap.out_num}"></h5>
+                                <span class="description-text">已下发</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="description-block border-right">
+                                <h5 class="description-header" th:text = "${resultMap.sale_num}"></h5>
+                                <span class="description-text">已销售</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="description-block border-right">
+                                <h5 class="description-header" th:text = "${resultMap.lost_num}"></h5>
+                                <span class="description-text">已挂失</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="description-block border-right">
+                                <h5 class="description-header" th:text = "${resultMap.outtime_num}"></h5>
+                                <span class="description-text">已过期</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+<!-- /.content-wrapper -->
+</div>
+
+<script layout:fragment="js">
+
+</script>
+</body>
+</html>

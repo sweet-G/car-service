@@ -65,13 +65,13 @@
                         <div class="col-md-6">
                             <div id="picker">选择联系人身份证照片</div>
                             <div class="photo" id="userPhoto">
-                                <img th:src="@{http://pea3t6vef.bkt.clouddn.com/{storeManagerAttachment}-preview(storeManagerAttachment=${ticketStore.storeManagerAttachment})}" alt="">
+                                <img th:src="@{http://pea3t6vef.bkt.clouddn.com/{storeManagerAttachment}-perview(storeManagerAttachment=${ticketStore.storeManagerAttachment})}" alt="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div id="picker2">选择营业执照照片</div>
                             <div class="photo" id="storePhoto">
-                                <img th:src="@{http://pea3t6vef.bkt.clouddn.com/{storeAttachment}-preview(storeAttachment=${ticketStore.storeAttachment})}" alt="">
+                                <img th:src="@{http://pea3t6vef.bkt.clouddn.com/{storeAttachment}-perview(storeAttachment=${ticketStore.storeAttachment})}" alt="">
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
         uploader.on( 'uploadSuccess', function( file,response ) {
             $("#userPhoto").html("");
             var fileName = response.key;
-            var $img = $("<img>").attr("src","http://pea3t6vef.bkt.clouddn.com/"+fileName+"-preview");
+            var $img = $("<img>").attr("src","http://pegepb5eq.bkt.clouddn.com/"+fileName+"-perview");
             $img.appendTo($("#userPhoto"));
             //将key存放到隐藏域中
             $("#storeManagerAttachment").val(fileName);
@@ -159,7 +159,7 @@
         uploader2.on( 'uploadSuccess', function( file,response ) {
             $("#storePhoto").html("");
             var fileName = response.key;
-            var $img = $("<img>").attr("src","http://pea3t6vef.bkt.clouddn.com/"+fileName+"-preview");
+            var $img = $("<img>").attr("src","http://pegepb5eq.bkt.clouddn.com/"+fileName+"-perview");
             $img.appendTo($("#storePhoto"));
             //将key存放到隐藏域中
             $("#storeAttachment").val(fileName);

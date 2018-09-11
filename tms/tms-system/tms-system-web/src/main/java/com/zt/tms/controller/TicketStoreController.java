@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.zt.tms.config.QiniuStore;
 import com.zt.tms.controller.exception.NotFoundException;
+import com.zt.tms.dto.ResponseBean;
 import com.zt.tms.entity.StoreAccount;
 import com.zt.tms.entity.TicketStore;
 import com.zt.tms.service.TicketStoreService;
@@ -59,7 +60,7 @@ public class TicketStoreController {
     public String add(TicketStore ticketStore, RedirectAttributes redirectAttributes){
         ticketStoreService.saveNewTicketStore(ticketStore);
         redirectAttributes.addFlashAttribute("message","新增售票点成功");
-        return "redirect/ticketstore";
+        return "redirect:/ticketstore";
     }
 
     @GetMapping("/{id:\\d+}")
@@ -100,4 +101,14 @@ public class TicketStoreController {
         return "redirect:/ticketstore";
     }
 
+    @GetMapping("/{id:\\d+}/state")
+    @ResponseBody
+    public ResponseBean state(@PathVariable Integer id){
+        try {
+            ticketStoreService.editState(id);
+            return ResponseBean.success();
+        } catch (Exception e) {
+            return ResponseBean.error(e.getMessage());
+        }
+    }
 }
